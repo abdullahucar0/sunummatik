@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SunumMatik - Akademik Sunum Kontrol Listesi</title>
+<title>Akademik Sunum Kontrol Listesi</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -62,10 +62,19 @@ body {
   position: relative;
   line-height: 1.25;
 }
+.site-header .sub2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: rgba(255,255,255,0.75);
+  margin-top: 0.5rem;
+  font-weight: 400;
+  font-style: italic;
+  position: relative;
+}
 .site-header .sub {
   font-size: 0.9rem;
-  color: rgba(255,255,255,0.55);
-  margin-top: 0.4rem;
+  color: rgba(255,255,255,0.4);
+  margin-top: 0.35rem;
   font-weight: 300;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -102,16 +111,82 @@ body {
   margin: 2.5rem auto 0;
   padding: 0 1.5rem;
 }
-.intro-text {
+.intro-card {
   background: white;
   border: 1px solid var(--border);
-  border-left: 4px solid var(--accent2);
-  border-radius: var(--radius);
-  padding: 1.4rem 1.6rem;
-  font-size: 0.95rem;
-  color: var(--ink2);
-  line-height: 1.75;
+  border-radius: 14px;
+  padding: 2.2rem 2.4rem 2rem;
   box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.intro-card::before {
+  content: '\201C';
+  font-family: 'Playfair Display', serif;
+  font-size: 9rem;
+  color: var(--accent-light);
+  position: absolute;
+  top: -1.5rem;
+  left: 1.2rem;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.intro-greeting {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.9rem;
+  font-style: italic;
+  position: relative;
+}
+.intro-body {
+  font-size: 1.05rem;
+  color: var(--ink2);
+  line-height: 1.85;
+  position: relative;
+}
+.intro-body strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.intro-sig {
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--paper3);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.intro-sig-avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 2px solid var(--accent-light);
+}
+.intro-sig-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.intro-sig-name a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-light);
+  transition: border-color 0.15s;
+}
+.intro-sig-name a:hover { border-color: var(--accent2); }
+.intro-sig-title {
+  font-size: 0.8rem;
+  color: var(--ink3);
+  margin-top: 1px;
 }
 
 /* PROGRESS */
@@ -422,7 +497,8 @@ body {
 </div>
 
 <header class="site-header">
-  <h1>SunumMatik<br>Akademik Sunum<br>Kontrol Listesi</h1>
+  <h1>SunumMatik</h1>
+  <p class="sub2">Akademik Sunum Kontrol Listesi</p>
   <p class="sub">Halk Sağlığı & Lisansüstü Akademi</p>
   <div class="counter-banner">
     <span class="counter-dot"></span>
@@ -431,9 +507,22 @@ body {
 </header>
 
 <div class="intro-box">
-  <div class="intro-text">
-    Merhabalar değerli ziyaretçimiz, bu sayfa akademide yapılan sunumların hem içerik kalitesini hem de dinleyici kitlenizle etkileşiminizi artırmak amacıyla bir kontrol listesi olarak oluşturulmuştur. Kendi sunumunuzu bu kontrol listesi üzerinden inceleyebilir, eksiklerinizi not alarak revize edebilirsiniz. Tebliğinizin ilim dünyasında yeni sorulara ve ufuklara vesile olmasını dileriz. 
-    <a href="https://linktr.ee/ucarabdullah" target="_blank" style="color:inherit; text-decoration:underline;">Abdullah Uçar</a>, Sakarya Üniversitesi Halk Sağlığı AD.
+  <div class="intro-card">
+    <div class="intro-greeting">Değerli ziyaretçimiz,</div>
+    <div class="intro-body">
+      Bu sayfa, akademide yapılan sunumların <strong>hem içerik kalitesini</strong> hem de <strong>dinleyici kitlenizle etkileşiminizi</strong> artırmak amacıyla bir kontrol listesi olarak oluşturulmuştur. Kendi sunumunuzu bu liste üzerinden inceleyebilir, eksiklerinizi not alarak revize edebilirsiniz.<br><br>
+      Sunumunuzda kolaylıklar diler, tebliğinizin ilim dünyasında <strong>yeni sorulara ve ufuklara vesile olmasını</strong> dileriz.
+    </div>
+    <div class="intro-sig">
+      <div class="intro-sig-avatar" id="sig-avatar">
+        <img id="sig-photo" src="" alt="AU" onerror="this.style.display='none'" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:50%;">
+        <span id="sig-initials">AU</span>
+      </div>
+      <div>
+        <div class="intro-sig-name"><a href="https://linktr.ee/ucarabdullah" target="_blank">Abdullah Uçar</a></div>
+        <div class="intro-sig-title">Dr. Öğr. Üyesi · Sakarya Üniversitesi Tıp Fakültesi Halk Sağlığı AD.</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -461,7 +550,7 @@ body {
 <div class="sections-wrap" id="sections"></div>
 
 <footer class="site-footer">
-  <a href="https://linktr.ee/ucarabdullah" target="_blank" style="color:inherit; text-decoration:underline;">Abdullah Uçar</a> · Sakarya Üniversitesi Tıp Fakültesi Halk Sağlığı AD. · CC BY-NC-ND 4.0
+  <a href="https://linktr.ee/ucarabdullah" target="_blank" style="color:var(--ink4); text-decoration:none; border-bottom: 1px solid var(--border);">Abdullah Uçar</a> · Sakarya Üniversitesi Tıp Fakültesi Halk Sağlığı AD. · CC BY-NC-ND 4.0
 </footer>
 
 <script>
@@ -901,6 +990,20 @@ function render() {
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
+
+// Profil resmi — localStorage'dan yükle
+(function() {
+  try {
+    const saved = localStorage.getItem('sm_profile_photo');
+    if (saved) {
+      const img = document.getElementById('sig-photo');
+      const ini = document.getElementById('sig-initials');
+      if (img) { img.src = saved; img.style.display = 'block'; }
+      if (ini) ini.style.display = 'none';
+    }
+  } catch(e) {}
+})();
+
 renderCounter();
 render();
 
