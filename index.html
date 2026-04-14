@@ -3,107 +3,521 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SunumMatik — Akademik Sunum Kontrol Listesi</title>
+<title>Akademik Sunum Kontrol Listesi</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#1a1a2e;--ink2:#3d3d5c;--ink3:#7a7a9a;--ink4:#b0b0cc;--paper:#faf9f6;--paper2:#f2f0eb;--paper3:#e8e5de;--accent:#2d6a4f;--accent2:#40916c;--accent-light:#d8f3dc;--blue:#1d3557;--blue-light:#e8f0f9;--warn:#c77d2e;--warn-light:#fdf0e0;--border:#dddad2;--radius:10px;--shadow:0 2px 16px rgba(26,26,46,0.07);}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;font-size:16px;line-height:1.6;}
-.site-header{background:var(--ink);color:white;padding:3rem 2rem 2.5rem;text-align:center;position:relative;overflow:hidden;}
-.site-header::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(255,255,255,0.015) 30px,rgba(255,255,255,0.015) 31px);}
-.site-header h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:600;letter-spacing:-0.01em;position:relative;line-height:1.25;}
-.site-header .sub{font-size:0.9rem;color:rgba(255,255,255,0.55);margin-top:0.4rem;font-weight:300;letter-spacing:0.04em;text-transform:uppercase;position:relative;}
-.counter-banner{display:inline-flex;align-items:center;gap:8px;margin-top:1.5rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:30px;padding:6px 18px;font-size:0.85rem;color:rgba(255,255,255,0.75);position:relative;}
-.counter-dot{width:7px;height:7px;border-radius:50%;background:#52b788;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.85)}}
-.counter-num{color:#74c69d;font-weight:600;}
-.sticky-bar{position:sticky;top:0;z-index:100;background:var(--ink);border-bottom:1px solid rgba(255,255,255,0.08);padding:10px 1.5rem;display:flex;align-items:center;gap:14px;box-shadow:0 2px 12px rgba(26,26,46,0.18);transform:translateY(-100%);transition:transform 0.25s ease;}
-.sticky-bar.visible{transform:translateY(0);}
-.sticky-score{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:white;white-space:nowrap;flex-shrink:0;}
-.sticky-score span{font-size:0.8rem;color:rgba(255,255,255,0.45);font-family:'Source Sans 3',sans-serif;}
-.sticky-track{flex:1;height:5px;background:rgba(255,255,255,0.12);border-radius:3px;overflow:hidden;}
-.sticky-fill{height:100%;background:linear-gradient(90deg,var(--accent),#52b788);border-radius:3px;transition:width 0.4s ease;width:0%;}
-.sticky-pct{font-size:0.8rem;color:#74c69d;font-weight:600;white-space:nowrap;flex-shrink:0;min-width:36px;text-align:right;}
-.intro-box{max-width:780px;margin:2.5rem auto 0;padding:0 1.5rem;}
-.intro-card{background:white;border:1px solid var(--border);border-radius:14px;padding:2.2rem 2.4rem 2rem;box-shadow:var(--shadow);position:relative;overflow:hidden;}
-.intro-card::before{content:'\201C';font-family:'Playfair Display',serif;font-size:9rem;color:var(--accent-light);position:absolute;top:-1.5rem;left:1.2rem;line-height:1;pointer-events:none;user-select:none;}
-.intro-greeting{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:400;color:var(--accent);margin-bottom:0.9rem;font-style:italic;position:relative;}
-.intro-body{font-size:1.05rem;color:var(--ink2);line-height:1.85;position:relative;}
-.intro-body strong{color:var(--ink);font-weight:600;}
-.intro-sig{margin-top:1.4rem;padding-top:1rem;border-top:1px solid var(--paper3);display:flex;align-items:center;gap:12px;}
-.intro-sig-avatar{width:38px;height:38px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1rem;color:var(--accent);flex-shrink:0;overflow:hidden;}
-.intro-sig-name{font-size:0.9rem;font-weight:600;color:var(--ink);}
-.intro-sig-name a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-light);transition:border-color 0.15s;}
-.intro-sig-name a:hover{border-color:var(--accent2);}
-.intro-sig-title{font-size:0.8rem;color:var(--ink3);margin-top:1px;}
-.progress-wrap{max-width:780px;margin:2rem auto 0;padding:0 1.5rem;}
-.progress-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1.6rem;box-shadow:var(--shadow);}
-.progress-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px;}
-.progress-label{font-size:0.88rem;color:var(--ink3);}
-.progress-score{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:600;color:var(--ink);line-height:1;}
-.progress-score span{font-size:1rem;color:var(--ink3);font-family:'Source Sans 3',sans-serif;}
-.progress-bar-track{height:8px;background:var(--paper2);border-radius:4px;overflow:hidden;}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width 0.4s ease;width:0%;}
-.progress-status{margin-top:0.75rem;font-size:0.85rem;color:var(--ink3);font-style:italic;min-height:1.2em;}
-.filter-row{display:flex;gap:6px;margin-top:1rem;flex-wrap:wrap;}
-.filter-btn{font-size:0.8rem;padding:4px 14px;border-radius:20px;border:1px solid var(--border);background:var(--paper);color:var(--ink3);cursor:pointer;transition:all 0.15s;font-family:inherit;}
-.filter-btn:hover{border-color:var(--ink4);color:var(--ink2);}
-.filter-btn.active{background:var(--ink);color:white;border-color:var(--ink);}
-.reset-btn{font-size:0.8rem;padding:4px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--ink4);cursor:pointer;font-family:inherit;transition:all 0.15s;margin-left:auto;}
-.reset-btn:hover{color:var(--ink3);border-color:var(--ink4);}
-.sections-wrap{max-width:780px;margin:2rem auto 4rem;padding:0 1.5rem;display:flex;flex-direction:column;gap:1rem;}
-.section-card{background:white;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
-.section-head{display:flex;align-items:center;gap:12px;padding:1rem 1.4rem;cursor:pointer;user-select:none;background:white;transition:background 0.12s;}
-.section-head:hover{background:var(--paper);}
-.sec-icon{font-size:1rem;flex-shrink:0;}
-.sec-name{font-size:1rem;font-weight:500;color:var(--ink);flex:1;}
-.sec-badge{font-size:0.75rem;padding:2px 10px;border-radius:12px;background:var(--paper2);border:1px solid var(--border);color:var(--ink3);font-weight:500;flex-shrink:0;}
-.sec-badge.complete{background:var(--accent-light);border-color:#95d5b2;color:var(--accent);}
-.sec-arrow{font-size:0.7rem;color:var(--ink4);transition:transform 0.2s;flex-shrink:0;}
-.sec-arrow.open{transform:rotate(90deg);}
-.sec-items{display:none;border-top:1px solid var(--border);}
-.sec-items.open{display:block;}
-.item{border-bottom:1px solid var(--paper2);transition:background 0.12s;}
-.item:last-child{border-bottom:none;}
-.item:hover{background:var(--paper);}
-.item.checked{background:#f7fdf9;}
-.item-main{display:flex;align-items:flex-start;gap:12px;padding:11px 1.4rem;cursor:pointer;}
-.cb{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;background:white;}
-.item.checked .cb{background:var(--accent2);border-color:var(--accent2);}
-.cb-tick{width:9px;height:7px;border-left:2px solid white;border-bottom:2px solid white;transform:rotate(-45deg) translate(1px,-1px);display:none;}
-.item.checked .cb-tick{display:block;}
-.item-body{flex:1;min-width:0;}
-.item-text{font-size:0.95rem;color:var(--ink);line-height:1.5;}
-.item.checked .item-text{color:var(--ink4);text-decoration:line-through;}
-.item-toggle{display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;color:var(--blue);cursor:pointer;margin-top:4px;padding:0;background:none;border:none;font-family:inherit;opacity:0.75;transition:opacity 0.15s;}
-.item-toggle:hover{opacity:1;}
-.item-toggle-icon{font-size:0.65rem;transition:transform 0.2s;}
-.item-toggle-icon.open{transform:rotate(90deg);}
-.item-detail{display:none;margin:6px 0 4px;padding:10px 14px;background:var(--blue-light);border-left:3px solid var(--blue);border-radius:0 6px 6px 0;font-size:0.875rem;color:var(--blue);line-height:1.65;}
-.item-detail.open{display:block;}
-.item-detail.extra{background:var(--warn-light);border-left-color:var(--warn);color:#7a4a10;}
-.site-footer{text-align:center;padding:2rem;font-size:0.8rem;color:var(--ink4);border-top:1px solid var(--border);}
-@media(max-width:600px){.site-header{padding:2rem 1rem 1.5rem;}.intro-box,.progress-wrap,.sections-wrap{padding:0 1rem;}.item-main{padding:10px 1rem;}.section-head{padding:0.9rem 1rem;}}
+:root {
+  --ink: #1a1a2e;
+  --ink2: #3d3d5c;
+  --ink3: #7a7a9a;
+  --ink4: #b0b0cc;
+  --paper: #faf9f6;
+  --paper2: #f2f0eb;
+  --paper3: #e8e5de;
+  --accent: #2d6a4f;
+  --accent2: #40916c;
+  --accent-light: #d8f3dc;
+  --blue: #1d3557;
+  --blue-light: #e8f0f9;
+  --warn: #c77d2e;
+  --warn-light: #fdf0e0;
+  --border: #dddad2;
+  --radius: 10px;
+  --shadow: 0 2px 16px rgba(26,26,46,0.07);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* HEADER */
+.site-header {
+  background: var(--ink);
+  color: white;
+  padding: 3rem 2rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    -45deg, transparent, transparent 30px,
+    rgba(255,255,255,0.015) 30px, rgba(255,255,255,0.015) 31px
+  );
+}
+.site-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  position: relative;
+  line-height: 1.25;
+}
+.site-header .sub2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: rgba(255,255,255,0.75);
+  margin-top: 0.5rem;
+  font-weight: 400;
+  font-style: italic;
+  position: relative;
+}
+.site-header .sub {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.4);
+  margin-top: 0.35rem;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  position: relative;
+}
+.counter-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 1.5rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 30px;
+  padding: 6px 18px;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.75);
+  position: relative;
+}
+.counter-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #52b788;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.5;transform:scale(0.85)}
+}
+.counter-num { color: #74c69d; font-weight: 600; }
+
+/* INTRO */
+.intro-box {
+  max-width: 780px;
+  margin: 2.5rem auto 0;
+  padding: 0 1.5rem;
+}
+.intro-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2.2rem 2.4rem 2rem;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.intro-card::before {
+  content: '\201C';
+  font-family: 'Playfair Display', serif;
+  font-size: 9rem;
+  color: var(--accent-light);
+  position: absolute;
+  top: -1.5rem;
+  left: 1.2rem;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.intro-greeting {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 0.9rem;
+  font-style: italic;
+  position: relative;
+}
+.intro-body {
+  font-size: 1.05rem;
+  color: var(--ink2);
+  line-height: 1.85;
+  position: relative;
+}
+.intro-body strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.intro-sig {
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--paper3);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.intro-sig-avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 2px solid var(--accent-light);
+}
+.intro-sig-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.intro-sig-name a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-light);
+  transition: border-color 0.15s;
+}
+.intro-sig-name a:hover { border-color: var(--accent2); }
+.intro-sig-title {
+  font-size: 0.8rem;
+  color: var(--ink3);
+  margin-top: 1px;
+}
+
+/* PROGRESS */
+.progress-wrap {
+  max-width: 780px;
+  margin: 2rem auto 0;
+  padding: 0 1.5rem;
+}
+.progress-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.6rem;
+  box-shadow: var(--shadow);
+}
+.progress-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.progress-label {
+  font-size: 0.88rem;
+  color: var(--ink3);
+  font-weight: 400;
+}
+.progress-score {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1;
+}
+.progress-score span { font-size: 1rem; color: var(--ink3); font-family: 'Source Sans 3', sans-serif; }
+.progress-bar-track {
+  height: 8px;
+  background: var(--paper2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 4px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+.progress-status {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--ink3);
+  font-style: italic;
+  min-height: 1.2em;
+}
+.filter-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  font-size: 0.8rem;
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--paper);
+  color: var(--ink3);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.filter-btn:hover { border-color: var(--ink4); color: var(--ink2); }
+.filter-btn.active { background: var(--ink); color: white; border-color: var(--ink); }
+
+/* RESET BTN */
+.reset-btn {
+  font-size: 0.8rem;
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--ink4);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  margin-left: auto;
+}
+.reset-btn:hover { color: var(--ink3); border-color: var(--ink4); }
+
+/* STICKY BAR */
+.sticky-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 10px 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 12px rgba(26,26,46,0.18);
+  transform: translateY(-100%);
+  transition: transform 0.25s ease;
+}
+.sticky-bar.visible { transform: translateY(0); }
+.sticky-score {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.sticky-score span { font-size: 0.8rem; color: rgba(255,255,255,0.45); font-family: 'Source Sans 3', sans-serif; }
+.sticky-track {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.sticky-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #52b788);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+.sticky-pct {
+  font-size: 0.8rem;
+  color: #74c69d;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* SECTIONS */
+.sections-wrap {
+  max-width: 780px;
+  margin: 2rem auto 4rem;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.section-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 1rem 1.4rem;
+  cursor: pointer;
+  user-select: none;
+  background: white;
+  transition: background 0.12s;
+}
+.section-head:hover { background: var(--paper); }
+.sec-icon { font-size: 1rem; flex-shrink: 0; }
+.sec-name { font-size: 1rem; font-weight: 500; color: var(--ink); flex: 1; }
+.sec-badge {
+  font-size: 0.75rem;
+  padding: 2px 10px;
+  border-radius: 12px;
+  background: var(--paper2);
+  border: 1px solid var(--border);
+  color: var(--ink3);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.sec-badge.complete { background: var(--accent-light); border-color: #95d5b2; color: var(--accent); }
+.sec-arrow {
+  font-size: 0.7rem;
+  color: var(--ink4);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.sec-arrow.open { transform: rotate(90deg); }
+
+.sec-items { display: none; border-top: 1px solid var(--border); }
+.sec-items.open { display: block; }
+
+/* ITEM */
+.item {
+  border-bottom: 1px solid var(--paper2);
+  transition: background 0.12s;
+}
+.item:last-child { border-bottom: none; }
+.item:hover { background: var(--paper); }
+.item.checked { background: #f7fdf9; }
+
+.item-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 11px 1.4rem 11px 1.4rem;
+  cursor: pointer;
+}
+.cb {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  border: 1.5px solid var(--border);
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  background: white;
+}
+.item.checked .cb {
+  background: var(--accent2);
+  border-color: var(--accent2);
+}
+.cb-tick {
+  width: 9px; height: 7px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(-45deg) translate(1px,-1px);
+  display: none;
+}
+.item.checked .cb-tick { display: block; }
+.item-body { flex: 1; min-width: 0; }
+.item-text {
+  font-size: 0.95rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.item.checked .item-text {
+  color: var(--ink4);
+  text-decoration: line-through;
+}
+/* ACCORDION INFO */
+.item-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--blue);
+  cursor: pointer;
+  margin-top: 4px;
+  padding: 0;
+  background: none;
+  border: none;
+  font-family: inherit;
+  opacity: 0.75;
+  transition: opacity 0.15s;
+}
+.item-toggle:hover { opacity: 1; }
+.item-toggle-icon { font-size: 0.65rem; transition: transform 0.2s; }
+.item-toggle-icon.open { transform: rotate(90deg); }
+.item-detail {
+  display: none;
+  margin: 6px 0 4px;
+  padding: 10px 14px;
+  background: var(--blue-light);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.875rem;
+  color: var(--blue);
+  line-height: 1.65;
+}
+.item-detail.open { display: block; }
+.item-detail.extra {
+  background: var(--warn-light);
+  border-left-color: var(--warn);
+  color: #7a4a10;
+}
+.item-detail.extra::before {
+  content: '+ Ek ipucu: ';
+  font-weight: 600;
+}
+
+/* FOOTER */
+.site-footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.8rem;
+  color: var(--ink4);
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 600px) {
+  .site-header { padding: 2rem 1rem 1.5rem; }
+  .intro-box, .progress-wrap, .sections-wrap { padding: 0 1rem; }
+  .item-main { padding: 10px 1rem; }
+  .section-head { padding: 0.9rem 1rem; }
+}
 </style>
 </head>
 <body>
+
 <div class="sticky-bar" id="sticky-bar">
   <div class="sticky-score" id="sticky-score">0 <span>/ 0</span></div>
   <div class="sticky-track"><div class="sticky-fill" id="sticky-fill"></div></div>
   <div class="sticky-pct" id="sticky-pct">%0</div>
 </div>
+
 <header class="site-header">
-  <h1>SunumMatik2</h1>
+  <h1>SunumMatik</h1>
+  <p class="sub2">Akademik Sunum Kontrol Listesi</p>
   <p class="sub">Halk Sağlığı & Lisansüstü Akademi</p>
-  <div class="counter-banner"><span class="counter-dot"></span><span id="counter-text">Yükleniyor…</span></div>
+  <div class="counter-banner">
+    <span class="counter-dot"></span>
+    <span id="counter-text">Yükleniyor…</span>
+  </div>
 </header>
+
 <div class="intro-box">
   <div class="intro-card">
     <div class="intro-greeting">Değerli ziyaretçimiz,</div>
-    <div class="intro-body">Bu sayfa, akademide yapılan sunumların <strong>hem içerik kalitesini</strong> hem de <strong>dinleyici kitlenizle etkileşiminizi</strong> artırmak amacıyla bir kontrol listesi olarak oluşturulmuştur. Kendi sunumunuzu bu liste üzerinden inceleyebilir, eksiklerinizi not alarak revize edebilirsiniz.<br><br>
-      Sunumunuzda kolaylıklar diler, tebliğinizin ilim dünyasında <strong>yeni sorulara ve ufuklara vesile olmasını</strong> dileriz.</div>
+    <div class="intro-body">
+      Bu sayfa, akademide yapılan sunumların <strong>hem içerik kalitesini</strong> hem de <strong>dinleyici kitlenizle etkileşiminizi</strong> artırmak amacıyla bir kontrol listesi olarak oluşturulmuştur. Kendi sunumunuzu bu liste üzerinden inceleyebilir, eksiklerinizi not alarak revize edebilirsiniz.<br><br>
+      Sunumunuzda kolaylıklar diler, tebliğinizin ilim dünyasında <strong>yeni sorulara ve ufuklara vesile olmasını</strong> dileriz.
+    </div>
     <div class="intro-sig">
-      <div class="intro-sig-avatar"><img src="https://ugc.production.linktr.ee/c4029ee1-8149-45ba-9e12-025d1af37d8f_Ads-z-tasar-m--2-.png?io=true&size=avatar-v3_0" alt="Abdullah Uçar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
+      <div class="intro-sig-avatar" id="sig-avatar">
+        <img id="sig-photo" src="" alt="AU" onerror="this.style.display='none'" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:50%;">
+        <span id="sig-initials">AU</span>
+      </div>
       <div>
         <div class="intro-sig-name"><a href="https://linktr.ee/ucarabdullah" target="_blank">Abdullah Uçar</a></div>
         <div class="intro-sig-title">Dr. Öğr. Üyesi · Sakarya Üniversitesi Tıp Fakültesi Halk Sağlığı AD.</div>
@@ -111,13 +525,19 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
     </div>
   </div>
 </div>
+
 <div class="progress-wrap">
   <div class="progress-card">
     <div class="progress-top">
-      <div><div class="progress-score" id="score-num">0 <span>/ 0</span></div><div class="progress-label">madde tamamlandı</div></div>
+      <div>
+        <div class="progress-score" id="score-num">0 <span>/ 0</span></div>
+        <div class="progress-label">madde tamamlandı</div>
+      </div>
       <button class="reset-btn" onclick="resetAll()">Sıfırla</button>
     </div>
-    <div class="progress-bar-track"><div class="progress-bar-fill" id="pbar"></div></div>
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="pbar"></div>
+    </div>
     <div class="progress-status" id="pstatus"></div>
     <div class="filter-row">
       <button class="filter-btn active" onclick="setFilter('all',this)">Tümü</button>
@@ -126,276 +546,474 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
     </div>
   </div>
 </div>
+
 <div class="sections-wrap" id="sections"></div>
+
 <footer class="site-footer">
-  <a href="https://linktr.ee/ucarabdullah" target="_blank" style="color:var(--ink4);text-decoration:none;border-bottom:1px solid var(--border);">Abdullah Uçar</a> · Sakarya Üniversitesi Tıp Fakültesi Halk Sağlığı AD. · CC BY-NC-ND 4.0
+  <a href="https://linktr.ee/ucarabdullah" target="_blank" style="color:var(--ink4); text-decoration:none; border-bottom: 1px solid var(--border);">Abdullah Uçar</a> · Sakarya Üniversitesi Tıp Fakültesi Halk Sağlığı AD. · CC BY-NC-ND 4.0
 </footer>
+
 <script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
 const SECTIONS = [
   {
-    "id": "haz",
-    "icon": "📋",
-    "title": "1. Hazırlık — İçerik & Planlama",
-    "items": [
+    id:"haz", icon:"📋", title:"1. Hazırlık — İçerik & Planlama",
+    items:[
       {
-        "text": "Hedef kitle belirlendi (uzman, öğrenci veya karma)",
-        "info": "Sunum hazırlamanın ilk adımı kimin için konuştuğunu bilmektir. Uzman bir dinleyici ayrıntıdan çok bağlamı sorgular; öğrenci ise kavramsal zemin ister. Karma kitlelerde en az ortak paydayı hedefle."
+        text:"Hedef kitle belirlendi (uzman, öğrenci veya karma)",
+        info:"Sunum hazırlamanın ilk adımı kimin için konuştuğunu bilmektir. Uzman bir dinleyici ayrıntıdan çok bağlamı sorgular; öğrenci ise kavramsal zemin ister. Karma kitlelerde en az ortak paydayı hedefle.",
       },
       {
-        "text": "Sunumun amacı netleştirildi (bilgi aktarımı / ikna / tartışma açmak)",
-        "info": "Amaç belirsiz olduğunda slaytlar her şeyi anlatmaya çalışır, hiçbirini iyi anlatamaz. 'Bu sunumun sonunda dinleyici ne yapmalı veya ne düşünmeli?' sorusunu kendinize sor."
+        text:"Sunumun amacı netleştirildi (bilgi aktarımı / ikna / tartışma açmak)",
+        info:"Amaç belirsiz olduğunda slaytlar her şeyi anlatmaya çalışır, hiçbirini iyi anlatamaz. 'Bu sunumun sonunda dinleyici ne yapmalı veya ne düşünmeli?' sorusunu kendinize sor.",
       },
       {
-        "text": "Kaynaklar toplandı ve tarandı (güncel, hakemli, konuyla doğrudan ilgili)",
-        "info": "Akademik sunumlarda kanıt zinciri kırılmamalıdır. Kaynaklar yalnızca referans vermek için değil, sunumun omurgasını oluşturmak için kullanılmalıdır."
+        text:"Kaynaklar toplandı ve tarandı (güncel, hakemli, konuyla doğrudan ilgili)",
+        info:"Akademik sunumlarda kanıt zinciri kırılmamalıdır. Kaynaklar yalnızca referans vermek için değil, sunumun omurgasını oluşturmak için kullanılmalıdır.",
       },
       {
-        "text": "Sunum metni (konuşma notu) yazıldı",
-        "info": "Slayt önce değil, metin önce gelir. Anlatacaklarını önce yazıya dökmek, slayta ne koyacağını netleştirir ve fazlalıkları daha kolay ayıklar."
+        text:"Sunum metni (konuşma notu) yazıldı",
+        info:"Slayt önce değil, metin önce gelir. Anlatacaklarını önce yazıya dökmek, slayta ne koyacağını netleştirir ve fazlalıkları daha kolay ayıklar.",
       },
       {
-        "text": "Görseller ve tablolar ayrı olarak hazırlandı, dosya klasörüne eklendi",
-        "info": "Görselleri slayta doğrudan yapıştırmak yerine kaynak dosyalarını saklamak, ileride revizyon yapmayı ve yeniden kullanımı kolaylaştırır."
+        text:"Görseller ve tablolar ayrı olarak hazırlandı, dosya klasörüne eklendi",
+        info:"Görselleri slayta doğrudan yapıştırmak yerine kaynak dosyalarını saklamak, ileride revizyon yapmayı ve yeniden kullanımı kolaylaştırır.",
       },
       {
-        "text": "Sunum tek bir cümleyle özetlenebiliyor ('take-home message' belirlendi)",
-        "info": "Eğer sunumunu bir cümleyle özetleyemiyorsan, mesajın henüz netleşmemiş demektir. Bu cümle sunumun iskeletidir; her slaytı bu cümleye katkısı açısından değerlendir.",
-        "extra": "Test: Sunumu bitirdikten 10 dakika sonra birine 'Bu sunum ne anlattı?' diye sor. Aldığın cevap bu cümleyle örtüşüyor mu?"
+        text:"Sunum tek bir cümleyle özetlenebiliyor ('take-home message' belirlendi)",
+        info:"Eğer sunumunu bir cümleyle özetleyemiyorsan, mesajın henüz netleşmemiş demektir. Bu cümle sunumun iskeletidir; her slaytı bu cümleye katkısı açısından değerlendir.",
+        extra:"Test: Sunumu bitirdikten 10 dakika sonra birine 'Bu sunum ne anlattı?' diye sor. Aldığın cevap bu cümleyle örtüşüyor mu?"
       },
       {
-        "text": "Sunumun en başında konunun referans kavramları sunuldu",
-        "info": "Dinleyicinin konuya yabancı olabileceği temel kavramlar (anahtar terimler, kısaltmalar, model adları) sunum başında kısaca tanımlanmalıdır. Bu zemin sunumun geri kalanını anlamlandırır."
-      }
+        text:"Sunumun en başında konunun referans kavramları sunuldu",
+        info:"Dinleyicinin konuya yabancı olabileceği temel kavramlar (anahtar terimler, kısaltmalar, model adları) sunum başında kısaca tanımlanmalıdır. Bu zemin sunumun geri kalanını anlamlandırır.",
+      },
     ]
   },
   {
-    "id": "yap",
-    "icon": "🗂",
-    "title": "2. Yapı & Akış",
-    "items": [
+    id:"yap", icon:"🗂", title:"2. Yapı & Akış",
+    items:[
       {
-        "text": "Başlık slaytı: ad-soyad, unvan, kurum ve tarih içeriyor",
-        "info": "Başlık slaytı sunucunun kimliğini ve bağlamını verir. Kurumsal sunum arşivlerinde tarihin de yer alması, sunumun ne zaman hazırlandığını gelecekte kolayca tespit ettirir."
+        text:"Başlık slaytı: ad-soyad, unvan, kurum ve tarih içeriyor",
+        info:"Başlık slaytı sunucunun kimliğini ve bağlamını verir. Kurumsal sunum arşivlerinde tarihin de yer alması, sunumun ne zaman hazırlandığını gelecekte kolayca tespit ettirir.",
       },
       {
-        "text": "Sunum planı (içindekiler) slaytı eklendi",
-        "info": "İçindekiler slaytı dinleyiciye bir zihin haritası verir. Uzun sunumlarda ara başlıkları tekrarlamak da yönlendirici olur."
+        text:"Sunum planı (içindekiler) slaytı eklendi",
+        info:"İçindekiler slaytı dinleyiciye bir zihin haritası verir. Uzun sunumlarda ara başlıkları tekrarlamak da yönlendirici olur.",
       },
       {
-        "text": "Her slaytın başlığı slayttaki mesajı özetliyor",
-        "info": "'Sonuçlar' gibi genel başlıklar yerine 'Müdahale grubunda mortalite %23 azaldı' gibi bulgusal başlıklar kullan. Başlıkları tek başına okuyunca sunumun akışı anlaşılabilmeli."
+        text:"Her slaytın başlığı slayttaki mesajı özetliyor",
+        info:"'Sonuçlar' gibi genel başlıklar yerine 'Müdahale grubunda mortalite %23 azaldı' gibi bulgusal başlıklar kullan. Başlıkları tek başına okuyunca sunumun akışı anlaşılabilmeli.",
       },
       {
-        "text": "Slayt sayısı 20'yi, toplam süre 40 dakikayı aşmıyor",
-        "info": "Uzman dinleyiciler için ideal oran: 1 slayt ≈ 2 dakika. Fazla slayt, derinlik değil dağınıklık işaretidir. Soru-cevap süresini de hesaba kat."
+        text:"Slayt sayısı 20'yi, toplam süre 40 dakikayı aşmıyor",
+        info:"Uzman dinleyiciler için ideal oran: 1 slayt ≈ 2 dakika. Fazla slayt, derinlik değil dağınıklık işaretidir. Soru-cevap süresini de hesaba kat.",
       },
       {
-        "text": "Sunumun neden önemli olduğu ilk slaytlarda açıklandı",
-        "info": "Dinleyici dikkatinin en yüksek olduğu an başlangıçtır. 'Neden bu konuya ihtiyaç var?' sorusu ilk 2–3 slayta yerleştirilmeli; motivasyonu geç vermek dinleyiciyi kaybettirir."
+        text:"Sunumun neden önemli olduğu ilk slaytlarda açıklandı",
+        info:"Dinleyici dikkatinin en yüksek olduğu an başlangıçtır. 'Neden bu konuya ihtiyaç var?' sorusu ilk 2–3 slayta yerleştirilmeli; motivasyonu geç vermek dinleyiciyi kaybettirir.",
       },
       {
-        "text": "Sunum en fazla 3–4 cümleyle özetlenebiliyor (dinleyende ne kalıyor?)",
-        "info": "'Take-home message' testinin genişletilmiş hâli. Sunumun ardından dinleyicinin cebinde taşıyacağı 3–4 net cümleyi önceden belirlemek, gereksiz içerik eklemeni de engeller.",
-        "extra": "Bu cümleleri sunum öncesinde bir kâğıda yaz; her slayt bu mesajlardan birine katkı sağlıyor olmalı."
+        text:"Sunum en fazla 3–4 cümleyle özetlenebiliyor (dinleyende ne kalıyor?)",
+        info:"'Take-home message' testinin genişletilmiş hâli. Sunumun ardından dinleyicinin cebinde taşıyacağı 3–4 net cümleyi önceden belirlemek, gereksiz içerik eklemeni de engeller.",
+        extra:"Bu cümleleri sunum öncesinde bir kâğıda yaz; her slayt bu mesajlardan birine katkı sağlıyor olmalı."
       },
       {
-        "text": "Sonuç slaytında tüm sunum 3–4 kısa cümleyle özetlendi",
-        "info": "Sonuç slaytı sunumun özeti değil, damıtılmış mesajıdır. 'Ne öğrendik?' sorusunu yanıtlayan birkaç kısa madde hem unutulmayı önler hem de soru-cevap bölümüne zemin hazırlar."
+        text:"Sonuç slaytında tüm sunum 3–4 kısa cümleyle özetlendi",
+        info:"Sonuç slaytı sunumun özeti değil, damıtılmış mesajıdır. 'Ne öğrendik?' sorusunu yanıtlayan birkaç kısa madde hem unutulmayı önler hem de soru-cevap bölümüne zemin hazırlar.",
       },
       {
-        "text": "Sunum sonunda en az bir bilimsel tartışma sorusu slayta eklendi",
-        "info": "Her iyi sunum yeni sorular doğurur. Dinleyiciyi aktif düşünmeye davet eden bir soru eklemek, sunumu kapatan değil açan bir kapıya dönüştürür. Bu soru literatürdeki boşluğu, metodolojik bir tartışmayı veya klinik bir ikilemi işaret edebilir.",
-        "extra": "Soru, sunucunun cevabını bilmediği, gerçekten tartışmaya açık bir soru olmalı. Retorik sorulardan kaçın."
+        text:"Sunum sonunda en az bir bilimsel tartışma sorusu slayta eklendi",
+        info:"Her iyi sunum yeni sorular doğurur. Dinleyiciyi aktif düşünmeye davet eden bir soru eklemek, sunumu kapatan değil açan bir kapıya dönüştürür. Bu soru literatürdeki boşluğu, metodolojik bir tartışmayı veya klinik bir ikilemi işaret edebilir.",
+        extra:"Soru, sunucunun cevabını bilmediği, gerçekten tartışmaya açık bir soru olmalı. Retorik sorulardan kaçın."
       },
       {
-        "text": "Kaynakça ve teşekkür slaytı eklendi",
-        "info": "Akademik etik açısından zorunludur. Kaynakları yalnızca son slayta değil, kullanılan veri ve görsellerin yanına da not düşmek iyi bir pratiktir."
-      }
+        text:"Kaynakça ve teşekkür slaytı eklendi",
+        info:"Akademik etik açısından zorunludur. Kaynakları yalnızca son slayta değil, kullanılan veri ve görsellerin yanına da not düşmek iyi bir pratiktir.",
+      },
     ]
   },
   {
-    "id": "miz",
-    "icon": "📐",
-    "title": "3. Mizanpaj & Görsel Tasarım",
-    "items": [
+    id:"miz", icon:"📐", title:"3. Mizanpaj & Görsel Tasarım",
+    items:[
       {
-        "text": "16:9 ölçek kullanıldı",
-        "info": "Günümüzdeki projektörler ve ekranlar 16:9 için optimize edilmiştir. 4:3 formatı kenar boşluğu bırakır veya içeriği keser."
+        text:"16:9 ölçek kullanıldı",
+        info:"Günümüzdeki projektörler ve ekranlar 16:9 için optimize edilmiştir. 4:3 formatı kenar boşluğu bırakır veya içeriği keser.",
       },
       {
-        "text": "Asıl slayt (Slide Master) üzerinden şablon oluşturuldu",
-        "info": "Slide Master kullanmak, yazı tipi, logo ve renk değişikliklerini tek seferde tüm slaytlara uygulamayı sağlar. Her slaytı tek tek düzenlemek hem zaman kaybettirir hem tutarsızlık yaratır."
+        text:"Asıl slayt (Slide Master) üzerinden şablon oluşturuldu",
+        info:"Slide Master kullanmak, yazı tipi, logo ve renk değişikliklerini tek seferde tüm slaytlara uygulamayı sağlar. Her slaytı tek tek düzenlemek hem zaman kaybettirir hem tutarsızlık yaratır.",
       },
       {
-        "text": "Her slaytta alt bilgi: sunum başlığı, sunan kişi ve slayt numarası var",
-        "info": "Alt bilgi, sunumun farklı ortamlarda (baskı, PDF, kayıt) bağlamını korur. Slayt numarası soru-cevap bölümünde referans almayı da kolaylaştırır."
+        text:"Her slaytta alt bilgi: sunum başlığı, sunan kişi ve slayt numarası var",
+        info:"Alt bilgi, sunumun farklı ortamlarda (baskı, PDF, kayıt) bağlamını korur. Slayt numarası soru-cevap bölümünde referans almayı da kolaylaştırır.",
       },
       {
-        "text": "Slaytlarda yeterli beyaz alan var, içerik sıkışık değil",
-        "info": "Beyaz alan (boşluk) gereksizlik değil, tasarımın bir unsurudur. Dolu slaytlar okunmaz; dinleyici okumaya çalışırken seni dinlemeyi bırakır."
+        text:"Slaytlarda yeterli beyaz alan var, içerik sıkışık değil",
+        info:"Beyaz alan (boşluk) gereksizlik değil, tasarımın bir unsurudur. Dolu slaytlar okunmaz; dinleyici okumaya çalışırken seni dinlemeyi bırakır.",
       },
       {
-        "text": "Nesneler hizalandı (akıllı hizalama veya kılavuz çizgiler kullanıldı)",
-        "info": "Hizalanmamış öğeler bilinçsiz bir rahatsızlık yaratır. PowerPoint'in 'Hizala' menüsü birkaç saniyede profesyonel bir düzen sağlar."
+        text:"Nesneler hizalandı (akıllı hizalama veya kılavuz çizgiler kullanıldı)",
+        info:"Hizalanmamış öğeler bilinçsiz bir rahatsızlık yaratır. PowerPoint'in 'Hizala' menüsü birkaç saniyede profesyonel bir düzen sağlar.",
       },
       {
-        "text": "Önemli bilgi optik merkeze yerleştirildi",
-        "info": "Dinleyicinin gözü slaytın geometrik merkezine değil, optik merkezine (sayfanın biraz üst kısmına) odaklanır. En kritik bilgiyi oraya yerleştir."
+        text:"Önemli bilgi optik merkeze yerleştirildi",
+        info:"Dinleyicinin gözü slaytın geometrik merkezine değil, optik merkezine (sayfanın biraz üst kısmına) odaklanır. En kritik bilgiyi oraya yerleştir.",
       },
       {
-        "text": "Renk sayısı minimumda tutuldu (2–3 ana renk)",
-        "info": "Fazla renk görsel gürültü yaratır. İki ana renk ve bir vurgu rengi çoğu sunum için yeterlidir. Kurumsal renk paleti varsa ona sadık kal."
+        text:"Renk sayısı minimumda tutuldu (2–3 ana renk)",
+        info:"Fazla renk görsel gürültü yaratır. İki ana renk ve bir vurgu rengi çoğu sunum için yeterlidir. Kurumsal renk paleti varsa ona sadık kal.",
       },
       {
-        "text": "Kontrast yeterli: koyu zeminde açık, açık zeminde koyu metin kullanıldı",
-        "info": "Düşük kontrast özellikle projektörlerde okumayı neredeyse imkânsız kılar. Renkleri seçerken gün ışığında veya soluk projektörde nasıl göründüğünü hayal et."
-      }
+        text:"Kontrast yeterli: koyu zeminde açık, açık zeminde koyu metin kullanıldı",
+        info:"Düşük kontrast özellikle projektörlerde okumayı neredeyse imkânsız kılar. Renkleri seçerken gün ışığında veya soluk projektörde nasıl göründüğünü hayal et.",
+      },
     ]
   },
   {
-    "id": "icerik",
-    "icon": "✍️",
-    "title": "4. İçerik Kalitesi",
-    "items": [
+    id:"icerik", icon:"✍️", title:"4. İçerik Kalitesi",
+    items:[
       {
-        "text": "Her slaytta tek bir ana fikir var",
-        "info": "'Bu slaytı çıkarsam ne kaybederim?' testini uygula. Eğer cevabın 'fazla bir şey' değilse, slayt gereksiz ya da başka bir slayta birleştirilebilir demektir."
+        text:"Her slaytta tek bir ana fikir var",
+        info:"'Bu slaytı çıkarsam ne kaybederim?' testini uygula. Eğer cevabın 'fazla bir şey' değilse, slayt gereksiz ya da başka bir slayta birleştirilebilir demektir.",
       },
       {
-        "text": "Uzun paragraf metinlerinden kaçınıldı",
-        "info": "Slayt ders notuna dönmemeli. Ayrıntı konuşma notunda kalmalı, slayta yalnızca can alıcı kısımlar taşınmalı. Okutmak istiyorsan, not paylaş."
+        text:"Uzun paragraf metinlerinden kaçınıldı",
+        info:"Slayt ders notuna dönmemeli. Ayrıntı konuşma notunda kalmalı, slayta yalnızca can alıcı kısımlar taşınmalı. Okutmak istiyorsan, not paylaş.",
       },
       {
-        "text": "Tablolar ve şekiller okunabilir büyüklükte",
-        "info": "Küçük tablo ve şekiller slayta değil, konuşma notuna veya ek bölümüne konulmalıdır. Ekranda okunamayan içerik dinleyiciyi sinirlendirip bağı koparır."
+        text:"Tablolar ve şekiller okunabilir büyüklükte",
+        info:"Küçük tablo ve şekiller slayta değil, konuşma notuna veya ek bölümüne konulmalıdır. Ekranda okunamayan içerik dinleyiciyi sinirlendirip bağı koparır.",
       },
       {
-        "text": "Zorunlu yabancı dil içerik dinleyiciye önceden açıklandı",
-        "info": "Yabancı dilde slayt eklenmesi gerekiyorsa bunun gerekçesi (yayın orijinali, uluslararası veri vb.) açıklanmalıdır. Açıklama yapmak saygının göstergesidir."
+        text:"Zorunlu yabancı dil içerik dinleyiciye önceden açıklandı",
+        info:"Yabancı dilde slayt eklenmesi gerekiyorsa bunun gerekçesi (yayın orijinali, uluslararası veri vb.) açıklanmalıdır. Açıklama yapmak saygının göstergesidir.",
       },
       {
-        "text": "Konunun anlaşılmasına yönelik referans yabancı kelimeler parantez içinde verildi",
-        "info": "Uluslararası literatüre ait teknik terimler (örn. 'effect modification (etki modifikasyonu)') parantez içinde Türkçesiyle birlikte verildiğinde hem yerli hem yabancı kaynak okuyucusu için köprü kurulur."
+        text:"Konunun anlaşılmasına yönelik referans yabancı kelimeler parantez içinde verildi",
+        info:"Uluslararası literatüre ait teknik terimler (örn. 'effect modification (etki modifikasyonu)') parantez içinde Türkçesiyle birlikte verildiğinde hem yerli hem yabancı kaynak okuyucusu için köprü kurulur.",
       },
       {
-        "text": "Konu içindeki teknik ifadeler ve yöntemler kısaca açıklayan ek slayt eklendi",
-        "info": "Karma kitlelerde istatistiksel yöntem, klinik protokol veya kavramsal model gibi teknik içerikler için 'ara açıklama' slaytı eklemek anlama boşluklarını kapatır.",
-        "extra": "Bu slaytlar 'uzman dinleyici için gereksiz' görünebilir; ancak tartışma aşamasında herkesin aynı çerçevede düşünmesini sağlar."
+        text:"Konu içindeki teknik ifadeler ve yöntemler kısaca açıklayan ek slayt eklendi",
+        info:"Karma kitlelerde istatistiksel yöntem, klinik protokol veya kavramsal model gibi teknik içerikler için 'ara açıklama' slaytı eklemek anlama boşluklarını kapatır.",
+        extra:"Bu slaytlar 'uzman dinleyici için gereksiz' görünebilir; ancak tartışma aşamasında herkesin aynı çerçevede düşünmesini sağlar."
       },
       {
-        "text": "Veriler doğru kaynaklara atıflandırıldı (APA, Vancouver vb.)",
-        "info": "Atıf formatı alanın standardına uygun olmalıdır. Tıp ve halk sağlığında Vancouver; sosyal bilimlerde APA yaygındır. Tutarsız atıf akademik güvenilirliği zedeler."
+        text:"Veriler doğru kaynaklara atıflandırıldı (APA, Vancouver vb.)",
+        info:"Atıf formatı alanın standardına uygun olmalıdır. Tıp ve halk sağlığında Vancouver; sosyal bilimlerde APA yaygındır. Tutarsız atıf akademik güvenilirliği zedeler.",
       },
       {
-        "text": "İstatistiksel veya epidemiyolojik rakamlar bağlamla birlikte verildi",
-        "info": "'%5 azalma' yerine 'Türkiye'de yıllık X kişiden Y'si kurtarılmış olurdu' gibi somutlaştırılmış rakamlar hem daha anlaşılır hem daha hatırlanabilirdir.",
-        "extra": "Rakamları her zaman referans grubuyla birlikte ver: '%5 azalma — neye göre, hangi grupta, hangi zaman diliminde?"
-      }
+        text:"İstatistiksel veya epidemiyolojik rakamlar bağlamla birlikte verildi",
+        info:"'%5 azalma' yerine 'Türkiye'de yıllık X kişiden Y'si kurtarılmış olurdu' gibi somutlaştırılmış rakamlar hem daha anlaşılır hem daha hatırlanabilirdir.",
+        extra:"Rakamları her zaman referans grubuyla birlikte ver: '%5 azalma — neye göre, hangi grupta, hangi zaman diliminde?"
+      },
     ]
   },
   {
-    "id": "gors",
-    "icon": "🖼",
-    "title": "5. Görseller, İkonlar & Medya",
-    "items": [
+    id:"gors", icon:"🖼", title:"5. Görseller, İkonlar & Medya",
+    items:[
       {
-        "text": "Görseller ve ikonlar tutarlı, sade bir stilden seçildi",
-        "info": "Farklı stilden ikonların bir arada kullanılması profesyonellik izlenimini zedeler. Flaticon, PowerPoint simgeleri veya tek bir ikon seti seçip ona sadık kal."
+        text:"Görseller ve ikonlar tutarlı, sade bir stilden seçildi",
+        info:"Farklı stilden ikonların bir arada kullanılması profesyonellik izlenimini zedeler. Flaticon, PowerPoint simgeleri veya tek bir ikon seti seçip ona sadık kal.",
       },
       {
-        "text": "Görsellerin telif hakkı kontrol edildi",
-        "info": "Akademik sunumlarda bile lisanssız görsel kullanımı hukuki sorun doğurabilir. Unsplash, Pexels gibi ücretsiz ya da CC lisanslı kaynaklara yönel; kullandığın kaynağı not al."
+        text:"Görsellerin telif hakkı kontrol edildi",
+        info:"Akademik sunumlarda bile lisanssız görsel kullanımı hukuki sorun doğurabilir. Unsplash, Pexels gibi ücretsiz ya da CC lisanslı kaynaklara yönel; kullandığın kaynağı not al.",
       },
       {
-        "text": "Animasyon ve tasarım zorunlu olmadıkça en sade şekilde tutuldu",
-        "info": "Animasyon yalnızca görsel yükü azaltmak ve bilgiyi adım adım vermek için araçtır. Dikkat dağıtıcı geçişler ve efektler sunumu değil sunucuyu ön plana çıkarır."
+        text:"Animasyon ve tasarım zorunlu olmadıkça en sade şekilde tutuldu",
+        info:"Animasyon yalnızca görsel yükü azaltmak ve bilgiyi adım adım vermek için araçtır. Dikkat dağıtıcı geçişler ve efektler sunumu değil sunucuyu ön plana çıkarır.",
       },
       {
-        "text": "Videolar / ses dosyaları sunum bilgisayarında test edildi",
-        "info": "Codec uyumsuzluğu, bağlantı gerektiren medya veya gömülü olmayan dosyalar sunum anında açılmayabilir. En güvenli yol videoyu dosyayla aynı klasöre gömmek ya da PDF'e dönüştürüp bağlantıyı kaldırmaktır."
-      }
+        text:"Videolar / ses dosyaları sunum bilgisayarında test edildi",
+        info:"Codec uyumsuzluğu, bağlantı gerektiren medya veya gömülü olmayan dosyalar sunum anında açılmayabilir. En güvenli yol videoyu dosyayla aynı klasöre gömmek ya da PDF'e dönüştürüp bağlantıyı kaldırmaktır.",
+      },
     ]
   },
   {
-    "id": "teknik",
-    "icon": "⚙️",
-    "title": "6. Teknik & Sunum Öncesi Kontrol",
-    "items": [
+    id:"teknik", icon:"⚙️", title:"6. Teknik & Sunum Öncesi Kontrol",
+    items:[
       {
-        "text": "Yazım denetimi yapıldı (Türkçe ve varsa İngilizce)",
-        "info": "Yazım hataları içerik ne kadar güçlü olursa olsun ciddiyeti zedeler. PowerPoint'in yerleşik denetiminin yanı sıra farklı bir kişiyle gözden geçirmek en etkili yöntemdir."
+        text:"Yazım denetimi yapıldı (Türkçe ve varsa İngilizce)",
+        info:"Yazım hataları içerik ne kadar güçlü olursa olsun ciddiyeti zedeler. PowerPoint'in yerleşik denetiminin yanı sıra farklı bir kişiyle gözden geçirmek en etkili yöntemdir.",
       },
       {
-        "text": "Slaytlar farklı bir bilgisayarda test edildi",
-        "info": "Fontlar gömülü değilse farklı bilgisayarda bozulabilir. PDF olarak da kaydetmek bu riski ortadan kaldırır; sunum mekânına PDF ile gidip orada PPTX'i açmayı dene."
+        text:"Slaytlar farklı bir bilgisayarda test edildi",
+        info:"Fontlar gömülü değilse farklı bilgisayarda bozulabilir. PDF olarak da kaydetmek bu riski ortadan kaldırır; sunum mekânına PDF ile gidip orada PPTX'i açmayı dene.",
       },
       {
-        "text": "Projektör / ekran çözünürlüğü test edildi",
-        "info": "Bazı mekânlarda 16:9 oranı kenar boşluğuyla gösterilir veya görüntü keskinliği düşer. Sunumdan önce mekânda kısa bir test yapmanı öneririz."
+        text:"Projektör / ekran çözünürlüğü test edildi",
+        info:"Bazı mekânlarda 16:9 oranı kenar boşluğuyla gösterilir veya görüntü keskinliği düşer. Sunumdan önce mekânda kısa bir test yapmanı öneririz.",
       },
       {
-        "text": "Sunum hem PPTX hem PDF olarak kaydedildi",
-        "info": "PPTX animasyonları ve düzeni korur; PDF ise her ortamda tutarlı görünür ve paylaşım için güvenlidir."
+        text:"Sunum hem PPTX hem PDF olarak kaydedildi",
+        info:"PPTX animasyonları ve düzeni korur; PDF ise her ortamda tutarlı görünür ve paylaşım için güvenlidir.",
       },
       {
-        "text": "Paylaşım için PDF versiyonu hazırlandı",
-        "info": "Dinleyicilerle paylaşırken her zaman PDF tercih et. PPTX paylaşmak tasarım bozulmalarına ve kaynak erişim sorunlarına neden olabilir."
+        text:"Paylaşım için PDF versiyonu hazırlandı",
+        info:"Dinleyicilerle paylaşırken her zaman PDF tercih et. PPTX paylaşmak tasarım bozulmalarına ve kaynak erişim sorunlarına neden olabilir.",
       },
       {
-        "text": "Sunum klasörü düzenlendi: metin, kaynaklar, görseller, PPTX, PDF, fontlar",
-        "info": "Düzenli bir klasör hem arşivleme hem de ileride bu sunumu revize etme sürecini hızlandırır. 'Slaytı nereden almıştım?' sorusu yaşanmamalıdır."
-      }
+        text:"Sunum klasörü düzenlendi: metin, kaynaklar, görseller, PPTX, PDF, fontlar",
+        info:"Düzenli bir klasör hem arşivleme hem de ileride bu sunumu revize etme sürecini hızlandırır. 'Slaytı nereden almıştım?' sorusu yaşanmamalıdır.",
+      },
     ]
   },
   {
-    "id": "sunum",
-    "icon": "🎤",
-    "title": "7. Sunu Performansı",
-    "items": [
+    id:"sunum", icon:"🎤", title:"7. Sunu Performansı",
+    items:[
       {
-        "text": "Slayttan metin okumak yerine anlatmak için pratik yapıldı",
-        "info": "Dinleyici metni okuyabilir; sen anlatıcısın. Konuşma notlarını kâğıda veya notlar bölümünde tut; slayta bak, metni oku değil — slayta bak, dinleyiciye anlat."
+        text:"Slayttan metin okumak yerine anlatmak için pratik yapıldı",
+        info:"Dinleyici metni okuyabilir; sen anlatıcısın. Konuşma notlarını kâğıda veya notlar bölümünde tut; slayta bak, metni oku değil — slayta bak, dinleyiciye anlat.",
       },
       {
-        "text": "Süre provası yapıldı (±5 dk tolerans)",
-        "info": "Prova yapmadan süreden emin olmak mümkün değildir. Provaları gerçek koşullara yakın yap: sesli anlat, slaytları gerçekten geç."
+        text:"Süre provası yapıldı (±5 dk tolerans)",
+        info:"Prova yapmadan süreden emin olmak mümkün değildir. Provaları gerçek koşullara yakın yap: sesli anlat, slaytları gerçekten geç.",
       },
       {
-        "text": "Soru-cevap bölümü için hazırlık yapıldı (olası 3–5 soru belirlendi)",
-        "info": "Uzman dinleyicilerin sorabileceği metodolojik, etik veya klinik soruları önceden düşün. 'Bilmiyorum, araştıracağım' demek utanılacak bir şey değil; hazırlıksız yakalanmak öyle."
+        text:"Soru-cevap bölümü için hazırlık yapıldı (olası 3–5 soru belirlendi)",
+        info:"Uzman dinleyicilerin sorabileceği metodolojik, etik veya klinik soruları önceden düşün. 'Bilmiyorum, araştıracağım' demek utanılacak bir şey değil; hazırlıksız yakalanmak öyle.",
       },
       {
-        "text": "Göz teması ve ses tonu üzerinde çalışıldı",
-        "info": "Monitöre değil, salonun farklı bölgelerine bakarak anlat. Ses tonu monoton olmamalı; önemli noktalarda yavaşlamak, duraksamak dikkat çeker."
+        text:"Göz teması ve ses tonu üzerinde çalışıldı",
+        info:"Monitöre değil, salonun farklı bölgelerine bakarak anlat. Ses tonu monoton olmamalı; önemli noktalarda yavaşlamak, duraksamak dikkat çeker.",
       },
       {
-        "text": "Sabır için değil, dinleme nezaketi için teşekkür edildi",
-        "info": "'Sabrınız için teşekkürler' sunumu bir yük olarak tanımlar. 'Dinleme nezaketiniz için teşekkürler' ise dinleyiciyi değerli kılar. Küçük bir fark, büyük bir his."
-      }
+        text:"Sabır için değil, dinleme nezaketi için teşekkür edildi",
+        info:"'Sabrınız için teşekkürler' sunumu bir yük olarak tanımlar. 'Dinleme nezaketiniz için teşekkürler' ise dinleyiciyi değerli kılar. Küçük bir fark, büyük bir his.",
+      },
     ]
-  }
+  },
 ];
+
 // ── STATE ─────────────────────────────────────────────────────────────────────
-let state={},openSec={},openItems={},filter='all';
-SECTIONS.forEach(s=>{openSec[s.id]=true;s.items.forEach((it,i)=>{state[s.id+'_'+i]=false;openItems[s.id+'_'+i]=false;});});
-const COUNTER_KEY='sunum_checklist_sessions';
-function getCount(){try{return parseInt(localStorage.getItem(COUNTER_KEY)||'0',10);}catch(e){return 0;}}
-function incrementCount(){try{const n=getCount()+1;localStorage.setItem(COUNTER_KEY,n);return n;}catch(e){return null;}}
-function renderCounter(){const n=getCount();const el=document.getElementById('counter-text');if(!el)return;el.innerHTML=n>0?'<span class="counter-num">'+n.toLocaleString('tr-TR')+'</span> sunum bu liste ile kontrol edildi':'Bu araç ile sunumunuzu kontrol edin';}
-let sessionCounted=false;
-function maybeCount(){if(sessionCounted)return;if(Object.values(state).filter(Boolean).length>=3){sessionCounted=true;incrementCount();renderCounter();}}
-function updateProgress(){const total=Object.keys(state).length,done=Object.values(state).filter(Boolean).length,pct=total?Math.round(done/total*100):0;document.getElementById('pbar').style.width=pct+'%';document.getElementById('score-num').innerHTML=done+' <span>/ '+total+'</span>';document.getElementById('sticky-fill').style.width=pct+'%';document.getElementById('sticky-score').innerHTML=done+' <span>/ '+total+'</span>';document.getElementById('sticky-pct').textContent='%'+pct;const s=[[0,0,'Kontrol listesini doldurmaya başla.'],[1,25,'İyi başlangıç — devam et.'],[26,50,'Sunumun şekilleniyor.'],[51,75,'Yarıdan fazlasını geçtin, bitiş yakın.'],[76,99,'Neredeyse hazırsın — son rötuşlar kaldı.'],[100,100,'🎉 Tebrikler! Sunumun hazır görünüyor.']];const r=s.find(r=>pct>=r[0]&&pct<=r[1]);document.getElementById('pstatus').textContent=r?r[2]:'';maybeCount();}
-function setFilter(f,btn){filter=f;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render();}
-function toggleSection(sid){openSec[sid]=!openSec[sid];const b=document.getElementById('sec-body-'+sid),a=document.getElementById('sec-arrow-'+sid);if(b)b.classList.toggle('open',openSec[sid]);if(a)a.classList.toggle('open',openSec[sid]);}
-function toggleItem(sid,i){const key=sid+'_'+i;state[key]=!state[key];const row=document.getElementById('item-'+key);if(row){if(filter==='pending'&&state[key])row.style.display='none';else if(filter==='done'&&!state[key])row.style.display='none';else row.className='item'+(state[key]?' checked':'');}const badge=document.getElementById('badge-'+sid);if(badge){badge.textContent=bText(sid);badge.className='sec-badge'+(secDone(sid)?' complete':'');}updateProgress();}
-function toggleInfo(key){openItems[key]=!openItems[key];const d=document.getElementById('detail-'+key),ic=document.getElementById('toggle-icon-'+key);if(d)d.classList.toggle('open',openItems[key]);if(ic)ic.classList.toggle('open',openItems[key]);}
-function bText(sid){const s=SECTIONS.find(x=>x.id===sid);return s.items.filter((_,i)=>state[sid+'_'+i]).length+'/'+s.items.length;}
-function secDone(sid){const s=SECTIONS.find(x=>x.id===sid);return s.items.every((_,i)=>state[sid+'_'+i]);}
-function resetAll(){Object.keys(state).forEach(k=>state[k]=false);Object.keys(openItems).forEach(k=>openItems[k]=false);render();}
-function render(){const c=document.getElementById('sections');c.innerHTML='';SECTIONS.forEach(s=>{const vis=s.items.filter((_,i)=>{const ch=state[s.id+'_'+i];if(filter==='pending')return!ch;if(filter==='done')return ch;return true;});if(filter!=='all'&&!vis.length)return;const open=openSec[s.id];const card=document.createElement('div');card.className='section-card';card.innerHTML='<div class="section-head" onclick="toggleSection(''+s.id+'')"><span class="sec-icon">'+s.icon+'</span><span class="sec-name">'+s.title+'</span><span class="sec-badge'+(secDone(s.id)?' complete':'')+'" id="badge-'+s.id+'">'+bText(s.id)+'</span><span class="sec-arrow'+(open?' open':'')+'" id="sec-arrow-'+s.id+'">▶</span></div><div class="sec-items'+(open?' open':'')+'" id="sec-body-'+s.id+'"></div>';const body=card.querySelector('.sec-items');s.items.forEach((it,i)=>{const key=s.id+'_'+i,ch=state[key];if(filter==='pending'&&ch)return;if(filter==='done'&&!ch)return;const hd=it.info||it.extra;const row=document.createElement('div');row.className='item'+(ch?' checked':'');row.id='item-'+key;row.innerHTML='<div class="item-main" onclick="toggleItem(''+s.id+'','+i+')"><div class="cb"><div class="cb-tick"></div></div><div class="item-body"><div class="item-text">'+it.text+'</div>'+(hd?'<button class="item-toggle" onclick="event.stopPropagation();toggleInfo(''+key+'')"><span class="item-toggle-icon'+(openItems[key]?' open':'')+'" id="toggle-icon-'+key+'">▶</span> Neden gerekli?</button>':'')+'</div></div>'+(hd?'<div class="item-detail'+(it.extra?' extra':'')+(openItems[key]?' open':'')+'" id="detail-'+key+'">'+(it.info||'')+(it.extra?'<br><br><strong>+ Ek ipucu:</strong> '+it.extra:'')+'</div>':'');body.appendChild(row);});c.appendChild(card);});updateProgress();}
-const sBar=document.getElementById('sticky-bar'),pWrap=document.querySelector('.progress-wrap');
-window.addEventListener('scroll',()=>{sBar.classList.toggle('visible',(pWrap?pWrap.getBoundingClientRect().bottom:200)<0);},{passive:true});
-renderCounter();render();
+let state = {};
+let openSec = {};
+let openItems = {};
+let filter = 'all';
+
+SECTIONS.forEach(s => {
+  openSec[s.id] = true;
+  s.items.forEach((it, i) => {
+    state[s.id + '_' + i] = false;
+    openItems[s.id + '_' + i] = false;
+  });
+});
+
+// ── COUNTER (localStorage for same-origin, fallback gracefully) ───────────────
+const COUNTER_KEY = 'sunum_checklist_sessions';
+function getCount() {
+  try { return parseInt(localStorage.getItem(COUNTER_KEY) || '0', 10); }
+  catch(e) { return 0; }
+}
+function incrementCount() {
+  try {
+    const n = getCount() + 1;
+    localStorage.setItem(COUNTER_KEY, n);
+    return n;
+  } catch(e) { return null; }
+}
+function renderCounter() {
+  const n = getCount();
+  const el = document.getElementById('counter-text');
+  if (!el) return;
+  if (n > 0) {
+    el.innerHTML = `<span class="counter-num">${n.toLocaleString('tr-TR')}</span> sunum bu liste ile kontrol edildi`;
+  } else {
+    el.textContent = 'Bu araç ile sunumunuzu kontrol edin';
+  }
+}
+
+let sessionCounted = false;
+function maybeCount() {
+  if (sessionCounted) return;
+  const done = Object.values(state).filter(Boolean).length;
+  if (done >= 3) {
+    sessionCounted = true;
+    incrementCount();
+    renderCounter();
+  }
+}
+
+// ── PROGRESS ──────────────────────────────────────────────────────────────────
+function updateProgress() {
+  const total = Object.keys(state).length;
+  const done = Object.values(state).filter(Boolean).length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+
+  document.getElementById('pbar').style.width = pct + '%';
+  document.getElementById('score-num').innerHTML = `${done} <span>/ ${total}</span>`;
+
+  // sticky bar
+  document.getElementById('sticky-fill').style.width = pct + '%';
+  document.getElementById('sticky-score').innerHTML = `${done} <span>/ ${total}</span>`;
+  document.getElementById('sticky-pct').textContent = '%' + pct;
+
+  const statuses = [
+    [0, 0, 'Kontrol listesini doldurmaya başla.'],
+    [1, 25, 'İyi başlangıç — devam et.'],
+    [26, 50, 'Sunumun şekilleniyor.'],
+    [51, 75, 'Yarıdan fazlasını geçtin, bitiş yakın.'],
+    [76, 99, 'Neredeyse hazırsın — son rötuşlar kaldı.'],
+    [100, 100, '🎉 Tebrikler! Sunumun hazır görünüyor.'],
+  ];
+  const row = statuses.find(r => pct >= r[0] && pct <= r[1]);
+  document.getElementById('pstatus').textContent = row ? row[2] : '';
+
+  maybeCount();
+}
+
+// ── FILTER ────────────────────────────────────────────────────────────────────
+function setFilter(f, btn) {
+  filter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+// ── TOGGLE HELPERS ────────────────────────────────────────────────────────────
+function toggleSection(sid) {
+  openSec[sid] = !openSec[sid];
+  const body = document.getElementById('sec-body-' + sid);
+  const arrow = document.getElementById('sec-arrow-' + sid);
+  if (body) body.classList.toggle('open', openSec[sid]);
+  if (arrow) arrow.classList.toggle('open', openSec[sid]);
+}
+
+function toggleItem(sid, i) {
+  const key = sid + '_' + i;
+  state[key] = !state[key];
+
+  const row = document.getElementById('item-' + key);
+  if (row) {
+    if (filter === 'pending' && state[key]) { row.style.display = 'none'; }
+    else if (filter === 'done' && !state[key]) { row.style.display = 'none'; }
+    else { row.className = 'item' + (state[key] ? ' checked' : ''); }
+  }
+
+  const badge = document.getElementById('badge-' + sid);
+  if (badge) {
+    badge.textContent = badgeText(sid);
+    badge.className = 'sec-badge' + (sectionComplete(sid) ? ' complete' : '');
+  }
+  updateProgress();
+}
+
+function toggleInfo(key) {
+  openItems[key] = !openItems[key];
+  const detail = document.getElementById('detail-' + key);
+  const icon = document.getElementById('toggle-icon-' + key);
+  if (detail) detail.classList.toggle('open', openItems[key]);
+  if (icon) icon.classList.toggle('open', openItems[key]);
+}
+
+function badgeText(sid) {
+  const s = SECTIONS.find(x => x.id === sid);
+  const done = s.items.filter((_, i) => state[sid + '_' + i]).length;
+  return done + '/' + s.items.length;
+}
+function sectionComplete(sid) {
+  const s = SECTIONS.find(x => x.id === sid);
+  return s.items.every((_, i) => state[sid + '_' + i]);
+}
+
+// ── RESET ─────────────────────────────────────────────────────────────────────
+function resetAll() {
+  Object.keys(state).forEach(k => state[k] = false);
+  Object.keys(openItems).forEach(k => openItems[k] = false);
+  render();
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function render() {
+  const container = document.getElementById('sections');
+  container.innerHTML = '';
+
+  SECTIONS.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'section-card';
+
+    // Visible items under current filter
+    const visibleItems = s.items.filter((_, i) => {
+      const checked = state[s.id + '_' + i];
+      if (filter === 'pending') return !checked;
+      if (filter === 'done') return checked;
+      return true;
+    });
+    if (filter !== 'all' && visibleItems.length === 0) return;
+
+    const open = openSec[s.id];
+    card.innerHTML = `
+      <div class="section-head" onclick="toggleSection('${s.id}')">
+        <span class="sec-icon">${s.icon}</span>
+        <span class="sec-name">${s.title}</span>
+        <span class="sec-badge${sectionComplete(s.id) ? ' complete' : ''}" id="badge-${s.id}">${badgeText(s.id)}</span>
+        <span class="sec-arrow${open ? ' open' : ''}" id="sec-arrow-${s.id}">▶</span>
+      </div>
+      <div class="sec-items${open ? ' open' : ''}" id="sec-body-${s.id}"></div>
+    `;
+
+    const body = card.querySelector('.sec-items');
+
+    s.items.forEach((it, i) => {
+      const key = s.id + '_' + i;
+      const checked = state[key];
+      if (filter === 'pending' && checked) return;
+      if (filter === 'done' && !checked) return;
+
+      const row = document.createElement('div');
+      row.className = 'item' + (checked ? ' checked' : '');
+      row.id = 'item-' + key;
+
+      const hasDetail = it.info || it.extra;
+      const detailClass = it.extra ? 'item-detail extra' : 'item-detail';
+
+      row.innerHTML = `
+        <div class="item-main" onclick="toggleItem('${s.id}', ${i})">
+          <div class="cb"><div class="cb-tick"></div></div>
+          <div class="item-body">
+            <div class="item-text">${it.text}</div>
+            ${hasDetail ? `<button class="item-toggle" onclick="event.stopPropagation(); toggleInfo('${key}')">
+              <span class="item-toggle-icon${openItems[key] ? ' open' : ''}" id="toggle-icon-${key}">▶</span> Neden gerekli?
+            </button>` : ''}
+          </div>
+        </div>
+        ${hasDetail ? `<div class="${detailClass}${openItems[key] ? ' open' : ''}" id="detail-${key}">${it.info || ''}${it.extra ? '<br><br><strong>+ Ek ipucu:</strong> ' + it.extra : ''}</div>` : ''}
+      `;
+      body.appendChild(row);
+    });
+
+    container.appendChild(card);
+  });
+
+  updateProgress();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+
+// Profil resmi — localStorage'dan yükle
+(function() {
+  try {
+    const saved = localStorage.getItem('sm_profile_photo');
+    if (saved) {
+      const img = document.getElementById('sig-photo');
+      const ini = document.getElementById('sig-initials');
+      if (img) { img.src = saved; img.style.display = 'block'; }
+      if (ini) ini.style.display = 'none';
+    }
+  } catch(e) {}
+})();
+
+renderCounter();
+render();
+
+// sticky bar scroll trigger
+const stickyBar = document.getElementById('sticky-bar');
+const progressWrap = document.querySelector('.progress-wrap');
+window.addEventListener('scroll', () => {
+  const threshold = (progressWrap ? progressWrap.getBoundingClientRect().bottom : 200);
+  stickyBar.classList.toggle('visible', threshold < 0);
+}, { passive: true });
 </script>
 </body>
 </html>
