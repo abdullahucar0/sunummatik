@@ -524,13 +524,16 @@ function collectFields() {
   const authorLink  = document.getElementById('f-author-link').value.trim();
   const photoUrl    = document.getElementById('f-photo-url').value.trim();
   const initials    = authorName.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase();
+  // Avatar: fotoğraf URL varsa img src'yi güncelle, yoksa initials
   const avatarInner = photoUrl
-    ? `<img src="${photoUrl}" alt="${authorName}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`
-    : initials;
-  const rawTitle = document.getElementById('f-site-title').value.trim();
-  const titleLines = rawTitle.replace(/\s+/,' ').replace(' ','<br>');
+    ? `<img id="sig-photo" src="${photoUrl}" alt="${authorName}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><span id="sig-initials" style="display:none">${initials}</span>`
+    : `<img id="sig-photo" src="" style="display:none"><span id="sig-initials">${initials}</span>`;
+  const siteTitle = document.getElementById('f-site-title').value.trim() || 'SunumMatik';
+  const siteSub2El = document.getElementById('f-site-sub2');
+  const siteSub2 = siteSub2El ? siteSub2El.value.trim() : 'Akademik Sunum Kontrol Listesi';
   return {
-    titleLines,
+    siteTitle,
+    siteSub2,
     siteSub:     document.getElementById('f-site-sub').value.trim(),
     authorName, authorLink, avatarInner,
     authorTitle: document.getElementById('f-author-title').value.trim(),
