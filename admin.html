@@ -158,7 +158,8 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
       <div class="panel-sec-head">👤 Profil & Başlık</div>
       <div class="panel-sec-body">
         <div><label>Site Başlığı</label><input type="text" id="f-site-title" placeholder="SunumMatik"></div>
-        <div><label>Alt başlık</label><input type="text" id="f-site-sub" placeholder="Halk Sağlığı & Lisansüstü Akademi"></div>
+        <div><label>İtalik alt başlık <span style="color:var(--ink4);font-size:0.78rem;">(Playfair italic, başlık altında)</span></label><input type="text" id="f-site-sub2" placeholder="Akademik Sunum Kontrol Listesi"></div>
+        <div><label>Küçük üst satır <span style="color:var(--ink4);font-size:0.78rem;">(büyük harf, soluk)</span></label><input type="text" id="f-site-sub" placeholder="Halk Sağlığı & Lisansüstü Akademi"></div>
         <div>
           <label>Profil adı</label><input type="text" id="f-author-name" placeholder="Abdullah Uçar" style="margin-bottom:6px;">
           <label>Profil linki</label><input type="url" id="f-author-link" placeholder="https://linktr.ee/...">
@@ -294,7 +295,9 @@ async function loadFromGitHub() {
     if (res.status === 401) { showToast('Token geçersiz. Lütfen yeniden giriş yapın.', true); clearSavedToken(); return; }
     const json = await res.json();
     currentSHA = json.sha;
-    const html = decodeURIComponent(escape(atob(json.content.replace(/\n/g,''))));
+    const raw = json.content.replace(/\n/g,'');
+    const bytes = Uint8Array.from(atob(raw), c => c.charCodeAt(0));
+    const html = new TextDecoder('utf-8').decode(bytes);
     parseHTML(html);
     setStatus('✓ Yüklendi');
   } catch(e) {
@@ -309,7 +312,9 @@ async function saveToGitHub() {
   setStatus('Kaydediliyor…');
   const newHTML = buildFullHTML(collectFields());
   try {
-    const encoded = btoa(unescape(encodeURIComponent(newHTML)));
+    const encBytes = new TextEncoder().encode(newHTML);
+    const encArr = Array.from(encBytes);
+    const encoded = btoa(encArr.map(b => String.fromCharCode(b)).join(''));
     const res = await fetch(
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`,
       {
@@ -341,6 +346,8 @@ function parseHTML(html) {
   const h1 = doc.querySelector('.site-header h1');
   document.getElementById('f-site-title').value = h1 ? h1.innerText.replace(/\n/g,' ') : '';
 
+  const sub2 = doc.querySelector('.site-header .sub2');
+  if (document.getElementById('f-site-sub2')) document.getElementById('f-site-sub2').value = sub2 ? sub2.textContent.trim() : '';
   const sub = doc.querySelector('.site-header .sub');
   document.getElementById('f-site-sub').value = sub ? sub.textContent.trim() : '';
 
@@ -360,7 +367,7 @@ function parseHTML(html) {
   const body = doc.querySelector('.intro-body');
   document.getElementById('f-intro-body').value = body ? body.innerHTML.trim() : '';
 
-  const m = html.match(/const SECTIONS\s*=\s*(\[[\s\S]*?\]);\s*\/\/ ── STATE/);
+  const m = html.match(/const SECTIONS\s*=\s*(\[[\s\S]*?\]);\s*\/\//);
   if (m) { try { parsedSections = (new Function('return ' + m[1]))(); } catch(e) { parsedSections = []; } }
 
   renderSectionsEditor();
@@ -502,7 +509,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .site-header{background:var(--ink);color:white;padding:3rem 2rem 2.5rem;text-align:center;position:relative;overflow:hidden;}
 .site-header::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(255,255,255,0.015) 30px,rgba(255,255,255,0.015) 31px);}
 .site-header h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:600;letter-spacing:-0.01em;position:relative;line-height:1.25;}
-.site-header .sub{font-size:0.9rem;color:rgba(255,255,255,0.55);margin-top:0.4rem;font-weight:300;letter-spacing:0.04em;text-transform:uppercase;position:relative;}
+.site-header .sub2{font-family:'Playfair Display',serif;font-size:clamp(1rem,2.5vw,1.3rem);color:rgba(255,255,255,0.75);margin-top:0.5rem;font-weight:400;font-style:italic;position:relative;}.site-header .sub{font-size:0.9rem;color:rgba(255,255,255,0.4);margin-top:0.35rem;font-weight:300;letter-spacing:0.04em;text-transform:uppercase;position:relative;}
 .counter-banner{display:inline-flex;align-items:center;gap:8px;margin-top:1.5rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:30px;padding:6px 18px;font-size:0.85rem;color:rgba(255,255,255,0.75);position:relative;}
 .counter-dot{width:7px;height:7px;border-radius:50%;background:#52b788;animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.85)}}
@@ -521,7 +528,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--
 .intro-body{font-size:1.05rem;color:var(--ink2);line-height:1.85;position:relative;}
 .intro-body strong{color:var(--ink);font-weight:600;}
 .intro-sig{margin-top:1.4rem;padding-top:1rem;border-top:1px solid var(--paper3);display:flex;align-items:center;gap:12px;}
-.intro-sig-avatar{width:38px;height:38px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1rem;color:var(--accent);flex-shrink:0;overflow:hidden;}
+.intro-sig-avatar{width:52px;height:52px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1rem;color:var(--accent);flex-shrink:0;overflow:hidden;}
 .intro-sig-name{font-size:0.9rem;font-weight:600;color:var(--ink);}
 .intro-sig-name a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-light);transition:border-color 0.15s;}
 .intro-sig-name a:hover{border-color:var(--accent2);}
