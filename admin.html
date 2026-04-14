@@ -310,12 +310,58 @@ async function saveToGitHub() {
   const btn = document.getElementById('save-btn');
   btn.disabled = true;
   setStatus('Kaydediliyor…');
-  const newHTML = buildFullHTML(collectFields());
   try {
-    const encBytes = new TextEncoder().encode(newHTML);
-    const encArr = Array.from(encBytes);
-    const encoded = btoa(encArr.map(b => String.fromCharCode(b)).join(''));
-    const res = await fetch(
+    // Güncel index.html'i GitHub'dan çek
+    const getRes = await fetch(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`,
+      { headers: { Authorization: `token ${activeToken}`, Accept: 'application/vnd.github.v3+json' } }
+    );
+    if (getRes.status === 401) { showToast('Token geçersiz.', true); clearSavedToken(); btn.disabled = false; return; }
+    const getJson = await getRes.json();
+    currentSHA = getJson.sha;
+    const rawBytes = Uint8Array.from(atob(getJson.content.replace(/\n/g,'')), c => c.charCodeAt(0));
+    let html = new TextDecoder('utf-8').decode(rawBytes);
+
+    // Sadece değişen parçaları bul-değiştir
+    const f = collectFields();
+
+    // Başlık h1
+    html = html.replace(/<h1>[\s\S]*?<\/h1>/, `<h1>${f.siteTitle}<\/h1>`);
+
+    // sub2 (italik alt başlık)
+    html = html.replace(/<p class="sub2">[^<]*<\/p>/, `<p class="sub2">${f.siteSub2}<\/p>`);
+
+    // sub (kurum)
+    html = html.replace(/<p class="sub">[^<]*<\/p>/, `<p class="sub">${f.siteSub}<\/p>`);
+
+    // Selamlama
+    html = html.replace(/<div class="intro-greeting">[\s\S]*?<\/div>/, `<div class="intro-greeting">${f.greeting}<\/div>`);
+
+    // intro-body
+    html = html.replace(/<div class="intro-body">[\s\S]*?<\/div>(?=\s*<div class="intro-sig")/, `<div class="intro-body">${f.introBody}<\/div>`);
+
+    // intro-sig-avatar içeriği
+    html = html.replace(/(<div class="intro-sig-avatar"[^>]*>)[\s\S]*?(<\/div>)(?=\s*<div>\s*<div class="intro-sig-name")/, `$1${f.avatarInner}$2`);
+
+    // Profil adı linki
+    html = html.replace(/<div class="intro-sig-name"><a href="[^"]*" target="_blank">[^<]*<\/a><\/div>/,
+      `<div class="intro-sig-name"><a href="${f.authorLink}" target="_blank">${f.authorName}<\/a><\/div>`);
+
+    // Profil unvan
+    html = html.replace(/<div class="intro-sig-title">[^<]*<\/div>/,
+      `<div class="intro-sig-title">${f.authorTitle}<\/div>`);
+
+    // Footer linki
+    html = html.replace(/<a href="[^"]*" target="_blank" style="color:var\(--ink4\)[^"]*">[^<]*<\/a>(?= · Sakarya)/,
+      `<a href="${f.authorLink}" target="_blank" style="color:var(--ink4);text-decoration:none;border-bottom:1px solid var(--border);">${f.authorName}<\/a>`);
+
+    // SECTIONS verisini güncelle
+    html = html.replace(/const SECTIONS = \[[\s\S]*?\];\s*\/\//, `const SECTIONS = ${f.sectionsJS};\n\/\/`);
+
+    // Kaydet
+    const encBytes = new TextEncoder().encode(html);
+    const encoded = btoa(Array.from(encBytes).map(b => String.fromCharCode(b)).join(''));
+    const putRes = await fetch(
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`,
       {
         method: 'PUT',
@@ -323,13 +369,13 @@ async function saveToGitHub() {
         body: JSON.stringify({ message: 'Admin panelinden güncellendi', content: encoded, sha: currentSHA })
       }
     );
-    if (res.status === 401) { showToast('Token geçersiz. Lütfen yeniden giriş yapın.', true); clearSavedToken(); btn.disabled = false; return; }
-    const json = await res.json();
-    if (json.content) {
-      currentSHA = json.content.sha;
+    if (putRes.status === 401) { showToast('Token geçersiz.', true); clearSavedToken(); btn.disabled = false; return; }
+    const putJson = await putRes.json();
+    if (putJson.content) {
+      currentSHA = putJson.content.sha;
       setStatus('✓ Kaydedildi');
       showToast('Kaydedildi! Site 1–2 dk içinde güncellenir.');
-    } else { throw new Error(json.message || 'Bilinmeyen hata'); }
+    } else { throw new Error(putJson.message || 'Bilinmeyen hata'); }
   } catch(e) {
     showToast('Kayıt başarısız: ' + e.message, true);
     setStatus('Hata!');
@@ -494,165 +540,7 @@ function collectFields() {
   };
 }
 
-function buildFullHTML(d) {
-  return `<!DOCTYPE html>
-<html lang="tr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SunumMatik — Akademik Sunum Kontrol Listesi</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{--ink:#1a1a2e;--ink2:#3d3d5c;--ink3:#7a7a9a;--ink4:#b0b0cc;--paper:#faf9f6;--paper2:#f2f0eb;--paper3:#e8e5de;--accent:#2d6a4f;--accent2:#40916c;--accent-light:#d8f3dc;--blue:#1d3557;--blue-light:#e8f0f9;--warn:#c77d2e;--warn-light:#fdf0e0;--border:#dddad2;--radius:10px;--shadow:0 2px 16px rgba(26,26,46,0.07);}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Source Sans 3',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;font-size:16px;line-height:1.6;}
-.site-header{background:var(--ink);color:white;padding:3rem 2rem 2.5rem;text-align:center;position:relative;overflow:hidden;}
-.site-header::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(255,255,255,0.015) 30px,rgba(255,255,255,0.015) 31px);}
-.site-header h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:600;letter-spacing:-0.01em;position:relative;line-height:1.25;}
-.site-header .sub2{font-family:'Playfair Display',serif;font-size:clamp(1rem,2.5vw,1.3rem);color:rgba(255,255,255,0.75);margin-top:0.5rem;font-weight:400;font-style:italic;position:relative;}.site-header .sub{font-size:0.9rem;color:rgba(255,255,255,0.4);margin-top:0.35rem;font-weight:300;letter-spacing:0.04em;text-transform:uppercase;position:relative;}
-.counter-banner{display:inline-flex;align-items:center;gap:8px;margin-top:1.5rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:30px;padding:6px 18px;font-size:0.85rem;color:rgba(255,255,255,0.75);position:relative;}
-.counter-dot{width:7px;height:7px;border-radius:50%;background:#52b788;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.85)}}
-.counter-num{color:#74c69d;font-weight:600;}
-.sticky-bar{position:sticky;top:0;z-index:100;background:var(--ink);border-bottom:1px solid rgba(255,255,255,0.08);padding:10px 1.5rem;display:flex;align-items:center;gap:14px;box-shadow:0 2px 12px rgba(26,26,46,0.18);transform:translateY(-100%);transition:transform 0.25s ease;}
-.sticky-bar.visible{transform:translateY(0);}
-.sticky-score{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:white;white-space:nowrap;flex-shrink:0;}
-.sticky-score span{font-size:0.8rem;color:rgba(255,255,255,0.45);font-family:'Source Sans 3',sans-serif;}
-.sticky-track{flex:1;height:5px;background:rgba(255,255,255,0.12);border-radius:3px;overflow:hidden;}
-.sticky-fill{height:100%;background:linear-gradient(90deg,var(--accent),#52b788);border-radius:3px;transition:width 0.4s ease;width:0%;}
-.sticky-pct{font-size:0.8rem;color:#74c69d;font-weight:600;white-space:nowrap;flex-shrink:0;min-width:36px;text-align:right;}
-.intro-box{max-width:780px;margin:2.5rem auto 0;padding:0 1.5rem;}
-.intro-card{background:white;border:1px solid var(--border);border-radius:14px;padding:2.2rem 2.4rem 2rem;box-shadow:var(--shadow);position:relative;overflow:hidden;}
-.intro-card::before{content:'\\201C';font-family:'Playfair Display',serif;font-size:9rem;color:var(--accent-light);position:absolute;top:-1.5rem;left:1.2rem;line-height:1;pointer-events:none;user-select:none;}
-.intro-greeting{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:400;color:var(--accent);margin-bottom:0.9rem;font-style:italic;position:relative;}
-.intro-body{font-size:1.05rem;color:var(--ink2);line-height:1.85;position:relative;}
-.intro-body strong{color:var(--ink);font-weight:600;}
-.intro-sig{margin-top:1.4rem;padding-top:1rem;border-top:1px solid var(--paper3);display:flex;align-items:center;gap:12px;}
-.intro-sig-avatar{width:52px;height:52px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1rem;color:var(--accent);flex-shrink:0;overflow:hidden;}
-.intro-sig-name{font-size:0.9rem;font-weight:600;color:var(--ink);}
-.intro-sig-name a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-light);transition:border-color 0.15s;}
-.intro-sig-name a:hover{border-color:var(--accent2);}
-.intro-sig-title{font-size:0.8rem;color:var(--ink3);margin-top:1px;}
-.progress-wrap{max-width:780px;margin:2rem auto 0;padding:0 1.5rem;}
-.progress-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1.6rem;box-shadow:var(--shadow);}
-.progress-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px;}
-.progress-label{font-size:0.88rem;color:var(--ink3);}
-.progress-score{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:600;color:var(--ink);line-height:1;}
-.progress-score span{font-size:1rem;color:var(--ink3);font-family:'Source Sans 3',sans-serif;}
-.progress-bar-track{height:8px;background:var(--paper2);border-radius:4px;overflow:hidden;}
-.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width 0.4s ease;width:0%;}
-.progress-status{margin-top:0.75rem;font-size:0.85rem;color:var(--ink3);font-style:italic;min-height:1.2em;}
-.filter-row{display:flex;gap:6px;margin-top:1rem;flex-wrap:wrap;}
-.filter-btn{font-size:0.8rem;padding:4px 14px;border-radius:20px;border:1px solid var(--border);background:var(--paper);color:var(--ink3);cursor:pointer;transition:all 0.15s;font-family:inherit;}
-.filter-btn:hover{border-color:var(--ink4);color:var(--ink2);}
-.filter-btn.active{background:var(--ink);color:white;border-color:var(--ink);}
-.reset-btn{font-size:0.8rem;padding:4px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--ink4);cursor:pointer;font-family:inherit;transition:all 0.15s;margin-left:auto;}
-.reset-btn:hover{color:var(--ink3);border-color:var(--ink4);}
-.sections-wrap{max-width:780px;margin:2rem auto 4rem;padding:0 1.5rem;display:flex;flex-direction:column;gap:1rem;}
-.section-card{background:white;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
-.section-head{display:flex;align-items:center;gap:12px;padding:1rem 1.4rem;cursor:pointer;user-select:none;background:white;transition:background 0.12s;}
-.section-head:hover{background:var(--paper);}
-.sec-icon{font-size:1rem;flex-shrink:0;}
-.sec-name{font-size:1rem;font-weight:500;color:var(--ink);flex:1;}
-.sec-badge{font-size:0.75rem;padding:2px 10px;border-radius:12px;background:var(--paper2);border:1px solid var(--border);color:var(--ink3);font-weight:500;flex-shrink:0;}
-.sec-badge.complete{background:var(--accent-light);border-color:#95d5b2;color:var(--accent);}
-.sec-arrow{font-size:0.7rem;color:var(--ink4);transition:transform 0.2s;flex-shrink:0;}
-.sec-arrow.open{transform:rotate(90deg);}
-.sec-items{display:none;border-top:1px solid var(--border);}
-.sec-items.open{display:block;}
-.item{border-bottom:1px solid var(--paper2);transition:background 0.12s;}
-.item:last-child{border-bottom:none;}
-.item:hover{background:var(--paper);}
-.item.checked{background:#f7fdf9;}
-.item-main{display:flex;align-items:flex-start;gap:12px;padding:11px 1.4rem;cursor:pointer;}
-.cb{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;background:white;}
-.item.checked .cb{background:var(--accent2);border-color:var(--accent2);}
-.cb-tick{width:9px;height:7px;border-left:2px solid white;border-bottom:2px solid white;transform:rotate(-45deg) translate(1px,-1px);display:none;}
-.item.checked .cb-tick{display:block;}
-.item-body{flex:1;min-width:0;}
-.item-text{font-size:0.95rem;color:var(--ink);line-height:1.5;}
-.item.checked .item-text{color:var(--ink4);text-decoration:line-through;}
-.item-toggle{display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;color:var(--blue);cursor:pointer;margin-top:4px;padding:0;background:none;border:none;font-family:inherit;opacity:0.75;transition:opacity 0.15s;}
-.item-toggle:hover{opacity:1;}
-.item-toggle-icon{font-size:0.65rem;transition:transform 0.2s;}
-.item-toggle-icon.open{transform:rotate(90deg);}
-.item-detail{display:none;margin:6px 0 4px;padding:10px 14px;background:var(--blue-light);border-left:3px solid var(--blue);border-radius:0 6px 6px 0;font-size:0.875rem;color:var(--blue);line-height:1.65;}
-.item-detail.open{display:block;}
-.item-detail.extra{background:var(--warn-light);border-left-color:var(--warn);color:#7a4a10;}
-.site-footer{text-align:center;padding:2rem;font-size:0.8rem;color:var(--ink4);border-top:1px solid var(--border);}
-@media(max-width:600px){.site-header{padding:2rem 1rem 1.5rem;}.intro-box,.progress-wrap,.sections-wrap{padding:0 1rem;}.item-main{padding:10px 1rem;}.section-head{padding:0.9rem 1rem;}}
-</style>
-</head>
-<body>
-<div class="sticky-bar" id="sticky-bar">
-  <div class="sticky-score" id="sticky-score">0 <span>/ 0</span></div>
-  <div class="sticky-track"><div class="sticky-fill" id="sticky-fill"></div></div>
-  <div class="sticky-pct" id="sticky-pct">%0</div>
-</div>
-<header class="site-header">
-  <h1>${d.titleLines}</h1>
-  <p class="sub">${d.siteSub}</p>
-  <div class="counter-banner"><span class="counter-dot"></span><span id="counter-text">Yükleniyor…</span></div>
-</header>
-<div class="intro-box">
-  <div class="intro-card">
-    <div class="intro-greeting">${d.greeting}</div>
-    <div class="intro-body">${d.introBody}</div>
-    <div class="intro-sig">
-      <div class="intro-sig-avatar">${d.avatarInner}</div>
-      <div>
-        <div class="intro-sig-name"><a href="${d.authorLink}" target="_blank">${d.authorName}</a></div>
-        <div class="intro-sig-title">${d.authorTitle}</div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="progress-wrap">
-  <div class="progress-card">
-    <div class="progress-top">
-      <div><div class="progress-score" id="score-num">0 <span>/ 0</span></div><div class="progress-label">madde tamamlandı</div></div>
-      <button class="reset-btn" onclick="resetAll()">Sıfırla</button>
-    </div>
-    <div class="progress-bar-track"><div class="progress-bar-fill" id="pbar"></div></div>
-    <div class="progress-status" id="pstatus"></div>
-    <div class="filter-row">
-      <button class="filter-btn active" onclick="setFilter('all',this)">Tümü</button>
-      <button class="filter-btn" onclick="setFilter('pending',this)">Eksikler</button>
-      <button class="filter-btn" onclick="setFilter('done',this)">Tamamlananlar</button>
-    </div>
-  </div>
-</div>
-<div class="sections-wrap" id="sections"></div>
-<footer class="site-footer">
-  <a href="${d.authorLink}" target="_blank" style="color:var(--ink4);text-decoration:none;border-bottom:1px solid var(--border);">${d.authorName}</a> · Sakarya Üniversitesi Tıp Fakültesi Halk Sağlığı AD. · CC BY-NC-ND 4.0
-</footer>
-<script>
-const SECTIONS = ${d.sectionsJS};
-// ── STATE ─────────────────────────────────────────────────────────────────────
-let state={},openSec={},openItems={},filter='all';
-SECTIONS.forEach(s=>{openSec[s.id]=true;s.items.forEach((it,i)=>{state[s.id+'_'+i]=false;openItems[s.id+'_'+i]=false;});});
-const COUNTER_KEY='sunum_checklist_sessions';
-function getCount(){try{return parseInt(localStorage.getItem(COUNTER_KEY)||'0',10);}catch(e){return 0;}}
-function incrementCount(){try{const n=getCount()+1;localStorage.setItem(COUNTER_KEY,n);return n;}catch(e){return null;}}
-function renderCounter(){const n=getCount();const el=document.getElementById('counter-text');if(!el)return;el.innerHTML=n>0?'<span class="counter-num">'+n.toLocaleString('tr-TR')+'</span> sunum bu liste ile kontrol edildi':'Bu araç ile sunumunuzu kontrol edin';}
-let sessionCounted=false;
-function maybeCount(){if(sessionCounted)return;if(Object.values(state).filter(Boolean).length>=3){sessionCounted=true;incrementCount();renderCounter();}}
-function updateProgress(){const total=Object.keys(state).length,done=Object.values(state).filter(Boolean).length,pct=total?Math.round(done/total*100):0;document.getElementById('pbar').style.width=pct+'%';document.getElementById('score-num').innerHTML=done+' <span>/ '+total+'</span>';document.getElementById('sticky-fill').style.width=pct+'%';document.getElementById('sticky-score').innerHTML=done+' <span>/ '+total+'</span>';document.getElementById('sticky-pct').textContent='%'+pct;const s=[[0,0,'Kontrol listesini doldurmaya başla.'],[1,25,'İyi başlangıç — devam et.'],[26,50,'Sunumun şekilleniyor.'],[51,75,'Yarıdan fazlasını geçtin, bitiş yakın.'],[76,99,'Neredeyse hazırsın — son rötuşlar kaldı.'],[100,100,'🎉 Tebrikler! Sunumun hazır görünüyor.']];const r=s.find(r=>pct>=r[0]&&pct<=r[1]);document.getElementById('pstatus').textContent=r?r[2]:'';maybeCount();}
-function setFilter(f,btn){filter=f;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render();}
-function toggleSection(sid){openSec[sid]=!openSec[sid];const b=document.getElementById('sec-body-'+sid),a=document.getElementById('sec-arrow-'+sid);if(b)b.classList.toggle('open',openSec[sid]);if(a)a.classList.toggle('open',openSec[sid]);}
-function toggleItem(sid,i){const key=sid+'_'+i;state[key]=!state[key];const row=document.getElementById('item-'+key);if(row){if(filter==='pending'&&state[key])row.style.display='none';else if(filter==='done'&&!state[key])row.style.display='none';else row.className='item'+(state[key]?' checked':'');}const badge=document.getElementById('badge-'+sid);if(badge){badge.textContent=bText(sid);badge.className='sec-badge'+(secDone(sid)?' complete':'');}updateProgress();}
-function toggleInfo(key){openItems[key]=!openItems[key];const d=document.getElementById('detail-'+key),ic=document.getElementById('toggle-icon-'+key);if(d)d.classList.toggle('open',openItems[key]);if(ic)ic.classList.toggle('open',openItems[key]);}
-function bText(sid){const s=SECTIONS.find(x=>x.id===sid);return s.items.filter((_,i)=>state[sid+'_'+i]).length+'/'+s.items.length;}
-function secDone(sid){const s=SECTIONS.find(x=>x.id===sid);return s.items.every((_,i)=>state[sid+'_'+i]);}
-function resetAll(){Object.keys(state).forEach(k=>state[k]=false);Object.keys(openItems).forEach(k=>openItems[k]=false);render();}
-function render(){const c=document.getElementById('sections');c.innerHTML='';SECTIONS.forEach(s=>{const vis=s.items.filter((_,i)=>{const ch=state[s.id+'_'+i];if(filter==='pending')return!ch;if(filter==='done')return ch;return true;});if(filter!=='all'&&!vis.length)return;const open=openSec[s.id];const card=document.createElement('div');card.className='section-card';card.innerHTML='<div class="section-head" onclick="toggleSection(\''+s.id+'\')"><span class="sec-icon">'+s.icon+'</span><span class="sec-name">'+s.title+'</span><span class="sec-badge'+(secDone(s.id)?' complete':'')+'" id="badge-'+s.id+'">'+bText(s.id)+'</span><span class="sec-arrow'+(open?' open':'')+'" id="sec-arrow-'+s.id+'">▶</span></div><div class="sec-items'+(open?' open':'')+'" id="sec-body-'+s.id+'"></div>';const body=card.querySelector('.sec-items');s.items.forEach((it,i)=>{const key=s.id+'_'+i,ch=state[key];if(filter==='pending'&&ch)return;if(filter==='done'&&!ch)return;const hd=it.info||it.extra;const row=document.createElement('div');row.className='item'+(ch?' checked':'');row.id='item-'+key;row.innerHTML='<div class="item-main" onclick="toggleItem(\''+s.id+'\','+i+')"><div class="cb"><div class="cb-tick"></div></div><div class="item-body"><div class="item-text">'+it.text+'</div>'+(hd?'<button class="item-toggle" onclick="event.stopPropagation();toggleInfo(\''+key+'\')"><span class="item-toggle-icon'+(openItems[key]?' open':'')+'" id="toggle-icon-'+key+'">▶</span> Neden gerekli?</button>':'')+'</div></div>'+(hd?'<div class="item-detail'+(it.extra?' extra':'')+(openItems[key]?' open':'')+'" id="detail-'+key+'">'+(it.info||'')+(it.extra?'<br><br><strong>+ Ek ipucu:</strong> '+it.extra:'')+'</div>':'');body.appendChild(row);});c.appendChild(card);});updateProgress();}
-const sBar=document.getElementById('sticky-bar'),pWrap=document.querySelector('.progress-wrap');
-window.addEventListener('scroll',()=>{sBar.classList.toggle('visible',(pWrap?pWrap.getBoundingClientRect().bottom:200)<0);},{passive:true});
-renderCounter();render();
-<\/script>
-</body>
-</html>`;
-}
+// buildFullHTML kaldırıldı — artık bul-değiştir yöntemi kullanılıyor
 </script>
 </body>
 </html>
