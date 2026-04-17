@@ -499,7 +499,7 @@ body {
 <header class="site-header">
   <h1>SunumMatik</h1>
   <p class="sub2">Akademik Sunum Kontrol Listesi</p>
-  <p class="sub">Halk Sağlığı & Lisansüstü Akademi</p>
+  <p class="sub">Sunumunuzu yapmadan önce bu kontrol listesi ile gözden geçirebilirsiniz.</p>
   <div class="counter-banner">
     <span class="counter-dot"></span>
     <span id="counter-text">Yükleniyor…</span>
@@ -509,15 +509,10 @@ body {
 <div class="intro-box">
   <div class="intro-card">
     <div class="intro-greeting">Değerli ziyaretçimiz,</div>
-    <div class="intro-body">
-      Bu sayfa, akademide yapılan sunumların <strong>hem içerik kalitesini</strong> hem de <strong>dinleyici kitlenizle etkileşiminizi</strong> artırmak amacıyla bir kontrol listesi olarak oluşturulmuştur. Kendi sunumunuzu bu liste üzerinden inceleyebilir, eksiklerinizi not alarak revize edebilirsiniz.<br><br>
-      Sunumunuzda kolaylıklar diler, tebliğinizin ilim dünyasında <strong>yeni sorulara ve ufuklara vesile olmasını</strong> dileriz.
-    </div>
+    <div class="intro-body">Bu sayfa, akademide yapılan sunumların <strong>hem içerik kalitesini</strong> hem de <strong>dinleyici kitlenizle etkileşiminizi</strong> artırmak amacıyla bir kontrol listesi olarak oluşturulmuştur. Kendi sunumunuzu bu liste üzerinden inceleyebilir, eksiklerinizi not alarak revize edebilirsiniz.<br><br>
+      Sunumunuzda kolaylıklar diler, tebliğinizin ilim dünyasında <strong>yeni sorulara ve ufuklara vesile olmasını</strong> dileriz.</div>
     <div class="intro-sig">
-      <div class="intro-sig-avatar" id="sig-avatar">
-        <img id="sig-photo" src="" alt="AU" onerror="this.style.display='none'" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:50%;">
-        <span id="sig-initials">AU</span>
-      </div>
+      <div class="intro-sig-avatar" id="sig-avatar"><img id="sig-photo" src="https://ugc.production.linktr.ee/c4029ee1-8149-45ba-9e12-025d1af37d8f_Ads-z-tasar-m--2-.png?io=true&size=avatar-v3_0" alt="Abdullah Uçar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><span id="sig-initials" style="display:none">AU</span></div>
       <div>
         <div class="intro-sig-name"><a href="https://linktr.ee/ucarabdullah" target="_blank">Abdullah Uçar</a></div>
         <div class="intro-sig-title">Dr. Öğr. Üyesi · Sakarya Üniversitesi Tıp Fakültesi Halk Sağlığı AD.</div>
@@ -550,242 +545,255 @@ body {
 <div class="sections-wrap" id="sections"></div>
 
 <footer class="site-footer">
-  <a href="https://linktr.ee/ucarabdullah" target="_blank" style="color:var(--ink4); text-decoration:none; border-bottom: 1px solid var(--border);">Abdullah Uçar</a> · Sakarya Üniversitesi Tıp Fakültesi Halk Sağlığı AD. · CC BY-NC-ND 4.0
+  <a href="https://linktr.ee/ucarabdullah" target="_blank" style="color:var(--ink4);text-decoration:none;border-bottom:1px solid var(--border);">Abdullah Uçar</a> · Sakarya Üniversitesi Tıp Fakültesi Halk Sağlığı AD. · CC BY-NC-ND 4.0
 </footer>
 
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const SECTIONS = [
   {
-    id:"haz", icon:"📋", title:"1. Hazırlık — İçerik & Planlama",
-    items:[
+    "id": "haz",
+    "icon": "📋",
+    "title": "1. Hazırlık — İçerik & Planlama",
+    "items": [
       {
-        text:"Hedef kitle belirlendi (uzman, öğrenci veya karma)",
-        info:"Sunum hazırlamanın ilk adımı kimin için konuştuğunu bilmektir. Uzman bir dinleyici ayrıntıdan çok bağlamı sorgular; öğrenci ise kavramsal zemin ister. Karma kitlelerde en az ortak paydayı hedefle.",
+        "text": "Hedef kitle belirlendi (uzman, öğrenci veya karma)",
+        "info": "Sunum hazırlamanın ilk adımı kimin için konuştuğunu bilmektir. Uzman bir dinleyici ayrıntıdan çok bağlamı sorgular; öğrenci ise kavramsal zemin ister. Karma kitlelerde en az ortak paydayı hedefle."
       },
       {
-        text:"Sunumun amacı netleştirildi (bilgi aktarımı / ikna / tartışma açmak)",
-        info:"Amaç belirsiz olduğunda slaytlar her şeyi anlatmaya çalışır, hiçbirini iyi anlatamaz. 'Bu sunumun sonunda dinleyici ne yapmalı veya ne düşünmeli?' sorusunu kendinize sor.",
+        "text": "Sunumun amacı netleştirildi (bilgi aktarımı / ikna / tartışma açmak)",
+        "info": "Amaç belirsiz olduğunda slaytlar her şeyi anlatmaya çalışır, hiçbirini iyi anlatamaz. 'Bu sunumun sonunda dinleyici ne yapmalı veya ne düşünmeli?' sorusunu kendinize sor."
       },
       {
-        text:"Kaynaklar toplandı ve tarandı (güncel, hakemli, konuyla doğrudan ilgili)",
-        info:"Akademik sunumlarda kanıt zinciri kırılmamalıdır. Kaynaklar yalnızca referans vermek için değil, sunumun omurgasını oluşturmak için kullanılmalıdır.",
+        "text": "Kaynaklar toplandı ve tarandı (güncel, hakemli, konuyla doğrudan ilgili)",
+        "info": "Akademik sunumlarda kanıt zinciri kırılmamalıdır. Kaynaklar yalnızca referans vermek için değil, sunumun omurgasını oluşturmak için kullanılmalıdır."
       },
       {
-        text:"Sunum metni (konuşma notu) yazıldı",
-        info:"Slayt önce değil, metin önce gelir. Anlatacaklarını önce yazıya dökmek, slayta ne koyacağını netleştirir ve fazlalıkları daha kolay ayıklar.",
+        "text": "Sunum metni (konuşma notu) yazıldı",
+        "info": "Slayt önce değil, metin önce gelir. Anlatacaklarını önce yazıya dökmek, slayta ne koyacağını netleştirir ve fazlalıkları daha kolay ayıklar."
       },
       {
-        text:"Görseller ve tablolar ayrı olarak hazırlandı, dosya klasörüne eklendi",
-        info:"Görselleri slayta doğrudan yapıştırmak yerine kaynak dosyalarını saklamak, ileride revizyon yapmayı ve yeniden kullanımı kolaylaştırır.",
+        "text": "Görseller ve tablolar ayrı olarak hazırlandı, dosya klasörüne eklendi",
+        "info": "Görselleri slayta doğrudan yapıştırmak yerine kaynak dosyalarını saklamak, ileride revizyon yapmayı ve yeniden kullanımı kolaylaştırır."
       },
       {
-        text:"Sunum tek bir cümleyle özetlenebiliyor ('take-home message' belirlendi)",
-        info:"Eğer sunumunu bir cümleyle özetleyemiyorsan, mesajın henüz netleşmemiş demektir. Bu cümle sunumun iskeletidir; her slaytı bu cümleye katkısı açısından değerlendir.",
-        extra:"Test: Sunumu bitirdikten 10 dakika sonra birine 'Bu sunum ne anlattı?' diye sor. Aldığın cevap bu cümleyle örtüşüyor mu?"
+        "text": "Sunum tek bir cümleyle özetlenebiliyor ('take-home message' belirlendi)",
+        "info": "Eğer sunumunu bir cümleyle özetleyemiyorsan, mesajın henüz netleşmemiş demektir. Bu cümle sunumun iskeletidir; her slaytı bu cümleye katkısı açısından değerlendir.",
+        "extra": "Test: Sunumu bitirdikten 10 dakika sonra birine 'Bu sunum ne anlattı?' diye sor. Aldığın cevap bu cümleyle örtüşüyor mu?"
       },
       {
-        text:"Sunumun en başında konunun referans kavramları sunuldu",
-        info:"Dinleyicinin konuya yabancı olabileceği temel kavramlar (anahtar terimler, kısaltmalar, model adları) sunum başında kısaca tanımlanmalıdır. Bu zemin sunumun geri kalanını anlamlandırır.",
-      },
+        "text": "Sunumun en başında konunun referans kavramları sunuldu",
+        "info": "Dinleyicinin konuya yabancı olabileceği temel kavramlar (anahtar terimler, kısaltmalar, model adları) sunum başında kısaca tanımlanmalıdır. Bu zemin sunumun geri kalanını anlamlandırır."
+      }
     ]
   },
   {
-    id:"yap", icon:"🗂", title:"2. Yapı & Akış",
-    items:[
+    "id": "yap",
+    "icon": "🗂",
+    "title": "2. Yapı & Akış",
+    "items": [
       {
-        text:"Başlık slaytı: ad-soyad, unvan, kurum ve tarih içeriyor",
-        info:"Başlık slaytı sunucunun kimliğini ve bağlamını verir. Kurumsal sunum arşivlerinde tarihin de yer alması, sunumun ne zaman hazırlandığını gelecekte kolayca tespit ettirir.",
+        "text": "Başlık slaytı: ad-soyad, unvan, kurum ve tarih içeriyor",
+        "info": "Başlık slaytı sunucunun kimliğini ve bağlamını verir. Kurumsal sunum arşivlerinde tarihin de yer alması, sunumun ne zaman hazırlandığını gelecekte kolayca tespit ettirir."
       },
       {
-        text:"Sunum planı (içindekiler) slaytı eklendi",
-        info:"İçindekiler slaytı dinleyiciye bir zihin haritası verir. Uzun sunumlarda ara başlıkları tekrarlamak da yönlendirici olur.",
+        "text": "Sunum planı (içindekiler) slaytı eklendi",
+        "info": "İçindekiler slaytı dinleyiciye bir zihin haritası verir. Uzun sunumlarda ara başlıkları tekrarlamak da yönlendirici olur."
       },
       {
-        text:"Her slaytın başlığı slayttaki mesajı özetliyor",
-        info:"'Sonuçlar' gibi genel başlıklar yerine 'Müdahale grubunda mortalite %23 azaldı' gibi bulgusal başlıklar kullan. Başlıkları tek başına okuyunca sunumun akışı anlaşılabilmeli.",
+        "text": "Her slaytın başlığı slayttaki mesajı özetliyor",
+        "info": "'Sonuçlar' gibi genel başlıklar yerine 'Müdahale grubunda mortalite %23 azaldı' gibi bulgusal başlıklar kullan. Başlıkları tek başına okuyunca sunumun akışı anlaşılabilmeli."
       },
       {
-        text:"Slayt sayısı 20'yi, toplam süre 40 dakikayı aşmıyor",
-        info:"Uzman dinleyiciler için ideal oran: 1 slayt ≈ 2 dakika. Fazla slayt, derinlik değil dağınıklık işaretidir. Soru-cevap süresini de hesaba kat.",
+        "text": "Slayt sayısı 20'yi, toplam süre 40 dakikayı aşmıyor",
+        "info": "Uzman dinleyiciler için ideal oran: 1 slayt ≈ 2 dakika. Fazla slayt, derinlik değil dağınıklık işaretidir. Soru-cevap süresini de hesaba kat."
       },
       {
-        text:"Sunumun neden önemli olduğu ilk slaytlarda açıklandı",
-        info:"Dinleyici dikkatinin en yüksek olduğu an başlangıçtır. 'Neden bu konuya ihtiyaç var?' sorusu ilk 2–3 slayta yerleştirilmeli; motivasyonu geç vermek dinleyiciyi kaybettirir.",
+        "text": "Sunumun neden önemli olduğu ilk slaytlarda açıklandı",
+        "info": "Dinleyici dikkatinin en yüksek olduğu an başlangıçtır. 'Neden bu konuya ihtiyaç var?' sorusu ilk 2–3 slayta yerleştirilmeli; motivasyonu geç vermek dinleyiciyi kaybettirir."
       },
       {
-        text:"Sunum en fazla 3–4 cümleyle özetlenebiliyor (dinleyende ne kalıyor?)",
-        info:"'Take-home message' testinin genişletilmiş hâli. Sunumun ardından dinleyicinin cebinde taşıyacağı 3–4 net cümleyi önceden belirlemek, gereksiz içerik eklemeni de engeller.",
-        extra:"Bu cümleleri sunum öncesinde bir kâğıda yaz; her slayt bu mesajlardan birine katkı sağlıyor olmalı."
+        "text": "Sunum en fazla 3–4 cümleyle özetlenebiliyor (dinleyende ne kalıyor?)",
+        "info": "'Take-home message' testinin genişletilmiş hâli. Sunumun ardından dinleyicinin cebinde taşıyacağı 3–4 net cümleyi önceden belirlemek, gereksiz içerik eklemeni de engeller.",
+        "extra": "Bu cümleleri sunum öncesinde bir kâğıda yaz; her slayt bu mesajlardan birine katkı sağlıyor olmalı."
       },
       {
-        text:"Sonuç slaytında tüm sunum 3–4 kısa cümleyle özetlendi",
-        info:"Sonuç slaytı sunumun özeti değil, damıtılmış mesajıdır. 'Ne öğrendik?' sorusunu yanıtlayan birkaç kısa madde hem unutulmayı önler hem de soru-cevap bölümüne zemin hazırlar.",
+        "text": "Sonuç slaytında tüm sunum 3–4 kısa cümleyle özetlendi",
+        "info": "Sonuç slaytı sunumun özeti değil, damıtılmış mesajıdır. 'Ne öğrendik?' sorusunu yanıtlayan birkaç kısa madde hem unutulmayı önler hem de soru-cevap bölümüne zemin hazırlar."
       },
       {
-        text:"Sunum sonunda en az bir bilimsel tartışma sorusu slayta eklendi",
-        info:"Her iyi sunum yeni sorular doğurur. Dinleyiciyi aktif düşünmeye davet eden bir soru eklemek, sunumu kapatan değil açan bir kapıya dönüştürür. Bu soru literatürdeki boşluğu, metodolojik bir tartışmayı veya klinik bir ikilemi işaret edebilir.",
-        extra:"Soru, sunucunun cevabını bilmediği, gerçekten tartışmaya açık bir soru olmalı. Retorik sorulardan kaçın."
+        "text": "Sunum sonunda en az bir bilimsel tartışma sorusu slayta eklendi",
+        "info": "Her iyi sunum yeni sorular doğurur. Dinleyiciyi aktif düşünmeye davet eden bir soru eklemek, sunumu kapatan değil açan bir kapıya dönüştürür. Bu soru literatürdeki boşluğu, metodolojik bir tartışmayı veya klinik bir ikilemi işaret edebilir.",
+        "extra": "Soru, sunucunun cevabını bilmediği, gerçekten tartışmaya açık bir soru olmalı. Retorik sorulardan kaçın."
       },
       {
-        text:"Kaynakça ve teşekkür slaytı eklendi",
-        info:"Akademik etik açısından zorunludur. Kaynakları yalnızca son slayta değil, kullanılan veri ve görsellerin yanına da not düşmek iyi bir pratiktir.",
-      },
+        "text": "Kaynakça ve teşekkür slaytı eklendi",
+        "info": "Akademik etik açısından zorunludur. Kaynakları yalnızca son slayta değil, kullanılan veri ve görsellerin yanına da not düşmek iyi bir pratiktir."
+      }
     ]
   },
   {
-    id:"miz", icon:"📐", title:"3. Mizanpaj & Görsel Tasarım",
-    items:[
+    "id": "miz",
+    "icon": "📐",
+    "title": "3. Mizanpaj & Görsel Tasarım",
+    "items": [
       {
-        text:"16:9 ölçek kullanıldı",
-        info:"Günümüzdeki projektörler ve ekranlar 16:9 için optimize edilmiştir. 4:3 formatı kenar boşluğu bırakır veya içeriği keser.",
+        "text": "16:9 ölçek kullanıldı",
+        "info": "Günümüzdeki projektörler ve ekranlar 16:9 için optimize edilmiştir. 4:3 formatı kenar boşluğu bırakır veya içeriği keser."
       },
       {
-        text:"Asıl slayt (Slide Master) üzerinden şablon oluşturuldu",
-        info:"Slide Master kullanmak, yazı tipi, logo ve renk değişikliklerini tek seferde tüm slaytlara uygulamayı sağlar. Her slaytı tek tek düzenlemek hem zaman kaybettirir hem tutarsızlık yaratır.",
+        "text": "Asıl slayt (Slide Master) üzerinden şablon oluşturuldu",
+        "info": "Slide Master kullanmak, yazı tipi, logo ve renk değişikliklerini tek seferde tüm slaytlara uygulamayı sağlar. Her slaytı tek tek düzenlemek hem zaman kaybettirir hem tutarsızlık yaratır."
       },
       {
-        text:"Her slaytta alt bilgi: sunum başlığı, sunan kişi ve slayt numarası var",
-        info:"Alt bilgi, sunumun farklı ortamlarda (baskı, PDF, kayıt) bağlamını korur. Slayt numarası soru-cevap bölümünde referans almayı da kolaylaştırır.",
+        "text": "Her slaytta alt bilgi: sunum başlığı, sunan kişi ve slayt numarası var",
+        "info": "Alt bilgi, sunumun farklı ortamlarda (baskı, PDF, kayıt) bağlamını korur. Slayt numarası soru-cevap bölümünde referans almayı da kolaylaştırır."
       },
       {
-        text:"Slaytlarda yeterli beyaz alan var, içerik sıkışık değil",
-        info:"Beyaz alan (boşluk) gereksizlik değil, tasarımın bir unsurudur. Dolu slaytlar okunmaz; dinleyici okumaya çalışırken seni dinlemeyi bırakır.",
+        "text": "Slaytlarda yeterli beyaz alan var, içerik sıkışık değil",
+        "info": "Beyaz alan (boşluk) gereksizlik değil, tasarımın bir unsurudur. Dolu slaytlar okunmaz; dinleyici okumaya çalışırken seni dinlemeyi bırakır."
       },
       {
-        text:"Nesneler hizalandı (akıllı hizalama veya kılavuz çizgiler kullanıldı)",
-        info:"Hizalanmamış öğeler bilinçsiz bir rahatsızlık yaratır. PowerPoint'in 'Hizala' menüsü birkaç saniyede profesyonel bir düzen sağlar.",
+        "text": "Nesneler hizalandı (akıllı hizalama veya kılavuz çizgiler kullanıldı)",
+        "info": "Hizalanmamış öğeler bilinçsiz bir rahatsızlık yaratır. PowerPoint'in 'Hizala' menüsü birkaç saniyede profesyonel bir düzen sağlar."
       },
       {
-        text:"Önemli bilgi optik merkeze yerleştirildi",
-        info:"Dinleyicinin gözü slaytın geometrik merkezine değil, optik merkezine (sayfanın biraz üst kısmına) odaklanır. En kritik bilgiyi oraya yerleştir.",
+        "text": "Önemli bilgi optik merkeze yerleştirildi",
+        "info": "Dinleyicinin gözü slaytın geometrik merkezine değil, optik merkezine (sayfanın biraz üst kısmına) odaklanır. En kritik bilgiyi oraya yerleştir."
       },
       {
-        text:"Renk sayısı minimumda tutuldu (2–3 ana renk)",
-        info:"Fazla renk görsel gürültü yaratır. İki ana renk ve bir vurgu rengi çoğu sunum için yeterlidir. Kurumsal renk paleti varsa ona sadık kal.",
+        "text": "Renk sayısı minimumda tutuldu (2–3 ana renk)",
+        "info": "Fazla renk görsel gürültü yaratır. İki ana renk ve bir vurgu rengi çoğu sunum için yeterlidir. Kurumsal renk paleti varsa ona sadık kal."
       },
       {
-        text:"Kontrast yeterli: koyu zeminde açık, açık zeminde koyu metin kullanıldı",
-        info:"Düşük kontrast özellikle projektörlerde okumayı neredeyse imkânsız kılar. Renkleri seçerken gün ışığında veya soluk projektörde nasıl göründüğünü hayal et.",
-      },
+        "text": "Kontrast yeterli: koyu zeminde açık, açık zeminde koyu metin kullanıldı",
+        "info": "Düşük kontrast özellikle projektörlerde okumayı neredeyse imkânsız kılar. Renkleri seçerken gün ışığında veya soluk projektörde nasıl göründüğünü hayal et."
+      }
     ]
   },
   {
-    id:"icerik", icon:"✍️", title:"4. İçerik Kalitesi",
-    items:[
+    "id": "icerik",
+    "icon": "✍️",
+    "title": "4. İçerik Kalitesi",
+    "items": [
       {
-        text:"Her slaytta tek bir ana fikir var",
-        info:"'Bu slaytı çıkarsam ne kaybederim?' testini uygula. Eğer cevabın 'fazla bir şey' değilse, slayt gereksiz ya da başka bir slayta birleştirilebilir demektir.",
+        "text": "Her slaytta tek bir ana fikir var",
+        "info": "'Bu slaytı çıkarsam ne kaybederim?' testini uygula. Eğer cevabın 'fazla bir şey' değilse, slayt gereksiz ya da başka bir slayta birleştirilebilir demektir."
       },
       {
-        text:"Uzun paragraf metinlerinden kaçınıldı",
-        info:"Slayt ders notuna dönmemeli. Ayrıntı konuşma notunda kalmalı, slayta yalnızca can alıcı kısımlar taşınmalı. Okutmak istiyorsan, not paylaş.",
+        "text": "Uzun paragraf metinlerinden kaçınıldı",
+        "info": "Slayt ders notuna dönmemeli. Ayrıntı konuşma notunda kalmalı, slayta yalnızca can alıcı kısımlar taşınmalı. Okutmak istiyorsan, not paylaş."
       },
       {
-        text:"Tablolar ve şekiller okunabilir büyüklükte",
-        info:"Küçük tablo ve şekiller slayta değil, konuşma notuna veya ek bölümüne konulmalıdır. Ekranda okunamayan içerik dinleyiciyi sinirlendirip bağı koparır.",
+        "text": "Tablolar ve şekiller okunabilir büyüklükte",
+        "info": "Küçük tablo ve şekiller slayta değil, konuşma notuna veya ek bölümüne konulmalıdır. Ekranda okunamayan içerik dinleyiciyi sinirlendirip bağı koparır."
       },
       {
-        text:"Zorunlu yabancı dil içerik dinleyiciye önceden açıklandı",
-        info:"Yabancı dilde slayt eklenmesi gerekiyorsa bunun gerekçesi (yayın orijinali, uluslararası veri vb.) açıklanmalıdır. Açıklama yapmak saygının göstergesidir.",
+        "text": "Zorunlu yabancı dil içerik dinleyiciye önceden açıklandı",
+        "info": "Yabancı dilde slayt eklenmesi gerekiyorsa bunun gerekçesi (yayın orijinali, uluslararası veri vb.) açıklanmalıdır. Açıklama yapmak saygının göstergesidir."
       },
       {
-        text:"Konunun anlaşılmasına yönelik referans yabancı kelimeler parantez içinde verildi",
-        info:"Uluslararası literatüre ait teknik terimler (örn. 'effect modification (etki modifikasyonu)') parantez içinde Türkçesiyle birlikte verildiğinde hem yerli hem yabancı kaynak okuyucusu için köprü kurulur.",
+        "text": "Konunun anlaşılmasına yönelik referans yabancı kelimeler parantez içinde verildi",
+        "info": "Uluslararası literatüre ait teknik terimler (örn. 'effect modification (etki modifikasyonu)') parantez içinde Türkçesiyle birlikte verildiğinde hem yerli hem yabancı kaynak okuyucusu için köprü kurulur."
       },
       {
-        text:"Konu içindeki teknik ifadeler ve yöntemler kısaca açıklayan ek slayt eklendi",
-        info:"Karma kitlelerde istatistiksel yöntem, klinik protokol veya kavramsal model gibi teknik içerikler için 'ara açıklama' slaytı eklemek anlama boşluklarını kapatır.",
-        extra:"Bu slaytlar 'uzman dinleyici için gereksiz' görünebilir; ancak tartışma aşamasında herkesin aynı çerçevede düşünmesini sağlar."
+        "text": "Konu içindeki teknik ifadeler ve yöntemler kısaca açıklayan ek slayt eklendi",
+        "info": "Karma kitlelerde istatistiksel yöntem, klinik protokol veya kavramsal model gibi teknik içerikler için 'ara açıklama' slaytı eklemek anlama boşluklarını kapatır.",
+        "extra": "Bu slaytlar 'uzman dinleyici için gereksiz' görünebilir; ancak tartışma aşamasında herkesin aynı çerçevede düşünmesini sağlar."
       },
       {
-        text:"Veriler doğru kaynaklara atıflandırıldı (APA, Vancouver vb.)",
-        info:"Atıf formatı alanın standardına uygun olmalıdır. Tıp ve halk sağlığında Vancouver; sosyal bilimlerde APA yaygındır. Tutarsız atıf akademik güvenilirliği zedeler.",
+        "text": "Veriler doğru kaynaklara atıflandırıldı (APA, Vancouver vb.)",
+        "info": "Atıf formatı alanın standardına uygun olmalıdır. Tıp ve halk sağlığında Vancouver; sosyal bilimlerde APA yaygındır. Tutarsız atıf akademik güvenilirliği zedeler."
       },
       {
-        text:"İstatistiksel veya epidemiyolojik rakamlar bağlamla birlikte verildi",
-        info:"'%5 azalma' yerine 'Türkiye'de yıllık X kişiden Y'si kurtarılmış olurdu' gibi somutlaştırılmış rakamlar hem daha anlaşılır hem daha hatırlanabilirdir.",
-        extra:"Rakamları her zaman referans grubuyla birlikte ver: '%5 azalma — neye göre, hangi grupta, hangi zaman diliminde?"
-      },
+        "text": "İstatistiksel veya epidemiyolojik rakamlar bağlamla birlikte verildi",
+        "info": "'%5 azalma' yerine 'Türkiye'de yıllık X kişiden Y'si kurtarılmış olurdu' gibi somutlaştırılmış rakamlar hem daha anlaşılır hem daha hatırlanabilirdir.",
+        "extra": "Rakamları her zaman referans grubuyla birlikte ver: '%5 azalma — neye göre, hangi grupta, hangi zaman diliminde?"
+      }
     ]
   },
   {
-    id:"gors", icon:"🖼", title:"5. Görseller, İkonlar & Medya",
-    items:[
+    "id": "gors",
+    "icon": "🖼",
+    "title": "5. Görseller, İkonlar & Medya",
+    "items": [
       {
-        text:"Görseller ve ikonlar tutarlı, sade bir stilden seçildi",
-        info:"Farklı stilden ikonların bir arada kullanılması profesyonellik izlenimini zedeler. Flaticon, PowerPoint simgeleri veya tek bir ikon seti seçip ona sadık kal.",
+        "text": "Görseller ve ikonlar tutarlı, sade bir stilden seçildi",
+        "info": "Farklı stilden ikonların bir arada kullanılması profesyonellik izlenimini zedeler. Flaticon, PowerPoint simgeleri veya tek bir ikon seti seçip ona sadık kal."
       },
       {
-        text:"Görsellerin telif hakkı kontrol edildi",
-        info:"Akademik sunumlarda bile lisanssız görsel kullanımı hukuki sorun doğurabilir. Unsplash, Pexels gibi ücretsiz ya da CC lisanslı kaynaklara yönel; kullandığın kaynağı not al.",
+        "text": "Görsellerin telif hakkı kontrol edildi",
+        "info": "Akademik sunumlarda bile lisanssız görsel kullanımı hukuki sorun doğurabilir. Unsplash, Pexels gibi ücretsiz ya da CC lisanslı kaynaklara yönel; kullandığın kaynağı not al."
       },
       {
-        text:"Animasyon ve tasarım zorunlu olmadıkça en sade şekilde tutuldu",
-        info:"Animasyon yalnızca görsel yükü azaltmak ve bilgiyi adım adım vermek için araçtır. Dikkat dağıtıcı geçişler ve efektler sunumu değil sunucuyu ön plana çıkarır.",
+        "text": "Animasyon ve tasarım zorunlu olmadıkça en sade şekilde tutuldu",
+        "info": "Animasyon yalnızca görsel yükü azaltmak ve bilgiyi adım adım vermek için araçtır. Dikkat dağıtıcı geçişler ve efektler sunumu değil sunucuyu ön plana çıkarır."
       },
       {
-        text:"Videolar / ses dosyaları sunum bilgisayarında test edildi",
-        info:"Codec uyumsuzluğu, bağlantı gerektiren medya veya gömülü olmayan dosyalar sunum anında açılmayabilir. En güvenli yol videoyu dosyayla aynı klasöre gömmek ya da PDF'e dönüştürüp bağlantıyı kaldırmaktır.",
-      },
+        "text": "Videolar / ses dosyaları sunum bilgisayarında test edildi",
+        "info": "Codec uyumsuzluğu, bağlantı gerektiren medya veya gömülü olmayan dosyalar sunum anında açılmayabilir. En güvenli yol videoyu dosyayla aynı klasöre gömmek ya da PDF'e dönüştürüp bağlantıyı kaldırmaktır."
+      }
     ]
   },
   {
-    id:"teknik", icon:"⚙️", title:"6. Teknik & Sunum Öncesi Kontrol",
-    items:[
+    "id": "teknik",
+    "icon": "⚙️",
+    "title": "6. Teknik & Sunum Öncesi Kontrol",
+    "items": [
       {
-        text:"Yazım denetimi yapıldı (Türkçe ve varsa İngilizce)",
-        info:"Yazım hataları içerik ne kadar güçlü olursa olsun ciddiyeti zedeler. PowerPoint'in yerleşik denetiminin yanı sıra farklı bir kişiyle gözden geçirmek en etkili yöntemdir.",
+        "text": "Yazım denetimi yapıldı (Türkçe ve varsa İngilizce)",
+        "info": "Yazım hataları içerik ne kadar güçlü olursa olsun ciddiyeti zedeler. PowerPoint'in yerleşik denetiminin yanı sıra farklı bir kişiyle gözden geçirmek en etkili yöntemdir."
       },
       {
-        text:"Slaytlar farklı bir bilgisayarda test edildi",
-        info:"Fontlar gömülü değilse farklı bilgisayarda bozulabilir. PDF olarak da kaydetmek bu riski ortadan kaldırır; sunum mekânına PDF ile gidip orada PPTX'i açmayı dene.",
+        "text": "Slaytlar farklı bir bilgisayarda test edildi",
+        "info": "Fontlar gömülü değilse farklı bilgisayarda bozulabilir. PDF olarak da kaydetmek bu riski ortadan kaldırır; sunum mekânına PDF ile gidip orada PPTX'i açmayı dene."
       },
       {
-        text:"Projektör / ekran çözünürlüğü test edildi",
-        info:"Bazı mekânlarda 16:9 oranı kenar boşluğuyla gösterilir veya görüntü keskinliği düşer. Sunumdan önce mekânda kısa bir test yapmanı öneririz.",
+        "text": "Projektör / ekran çözünürlüğü test edildi",
+        "info": "Bazı mekânlarda 16:9 oranı kenar boşluğuyla gösterilir veya görüntü keskinliği düşer. Sunumdan önce mekânda kısa bir test yapmanı öneririz."
       },
       {
-        text:"Sunum hem PPTX hem PDF olarak kaydedildi",
-        info:"PPTX animasyonları ve düzeni korur; PDF ise her ortamda tutarlı görünür ve paylaşım için güvenlidir.",
+        "text": "Sunum hem PPTX hem PDF olarak kaydedildi",
+        "info": "PPTX animasyonları ve düzeni korur; PDF ise her ortamda tutarlı görünür ve paylaşım için güvenlidir."
       },
       {
-        text:"Paylaşım için PDF versiyonu hazırlandı",
-        info:"Dinleyicilerle paylaşırken her zaman PDF tercih et. PPTX paylaşmak tasarım bozulmalarına ve kaynak erişim sorunlarına neden olabilir.",
+        "text": "Paylaşım için PDF versiyonu hazırlandı",
+        "info": "Dinleyicilerle paylaşırken her zaman PDF tercih et. PPTX paylaşmak tasarım bozulmalarına ve kaynak erişim sorunlarına neden olabilir."
       },
       {
-        text:"Sunum klasörü düzenlendi: metin, kaynaklar, görseller, PPTX, PDF, fontlar",
-        info:"Düzenli bir klasör hem arşivleme hem de ileride bu sunumu revize etme sürecini hızlandırır. 'Slaytı nereden almıştım?' sorusu yaşanmamalıdır.",
-      },
+        "text": "Sunum klasörü düzenlendi: metin, kaynaklar, görseller, PPTX, PDF, fontlar",
+        "info": "Düzenli bir klasör hem arşivleme hem de ileride bu sunumu revize etme sürecini hızlandırır. 'Slaytı nereden almıştım?' sorusu yaşanmamalıdır."
+      }
     ]
   },
   {
-    id:"sunum", icon:"🎤", title:"7. Sunu Performansı",
-    items:[
+    "id": "sunum",
+    "icon": "🎤",
+    "title": "7. Sunu Performansı",
+    "items": [
       {
-        text:"Slayttan metin okumak yerine anlatmak için pratik yapıldı",
-        info:"Dinleyici metni okuyabilir; sen anlatıcısın. Konuşma notlarını kâğıda veya notlar bölümünde tut; slayta bak, metni oku değil — slayta bak, dinleyiciye anlat.",
+        "text": "Slayttan metin okumak yerine anlatmak için pratik yapıldı",
+        "info": "Dinleyici metni okuyabilir; sen anlatıcısın. Konuşma notlarını kâğıda veya notlar bölümünde tut; slayta bak, metni oku değil — slayta bak, dinleyiciye anlat."
       },
       {
-        text:"Süre provası yapıldı (±5 dk tolerans)",
-        info:"Prova yapmadan süreden emin olmak mümkün değildir. Provaları gerçek koşullara yakın yap: sesli anlat, slaytları gerçekten geç.",
+        "text": "Süre provası yapıldı (±5 dk tolerans)",
+        "info": "Prova yapmadan süreden emin olmak mümkün değildir. Provaları gerçek koşullara yakın yap: sesli anlat, slaytları gerçekten geç."
       },
       {
-        text:"Soru-cevap bölümü için hazırlık yapıldı (olası 3–5 soru belirlendi)",
-        info:"Uzman dinleyicilerin sorabileceği metodolojik, etik veya klinik soruları önceden düşün. 'Bilmiyorum, araştıracağım' demek utanılacak bir şey değil; hazırlıksız yakalanmak öyle.",
+        "text": "Soru-cevap bölümü için hazırlık yapıldı (olası 3–5 soru belirlendi)",
+        "info": "Uzman dinleyicilerin sorabileceği metodolojik, etik veya klinik soruları önceden düşün. 'Bilmiyorum, araştıracağım' demek utanılacak bir şey değil; hazırlıksız yakalanmak öyle."
       },
       {
-        text:"Göz teması ve ses tonu üzerinde çalışıldı",
-        info:"Monitöre değil, salonun farklı bölgelerine bakarak anlat. Ses tonu monoton olmamalı; önemli noktalarda yavaşlamak, duraksamak dikkat çeker.",
+        "text": "Göz teması ve ses tonu üzerinde çalışıldı",
+        "info": "Monitöre değil, salonun farklı bölgelerine bakarak anlat. Ses tonu monoton olmamalı; önemli noktalarda yavaşlamak, duraksamak dikkat çeker."
       },
       {
-        text:"Sabır için değil, dinleme nezaketi için teşekkür edildi",
-        info:"'Sabrınız için teşekkürler' sunumu bir yük olarak tanımlar. 'Dinleme nezaketiniz için teşekkürler' ise dinleyiciyi değerli kılar. Küçük bir fark, büyük bir his.",
-      },
+        "text": "Sabır için değil, dinleme nezaketi için teşekkür edildi",
+        "info": "'Sabrınız için teşekkürler' sunumu bir yük olarak tanımlar. 'Dinleme nezaketiniz için teşekkürler' ise dinleyiciyi değerli kılar. Küçük bir fark, büyük bir his."
+      }
     ]
-  },
+  }
 ];
-
 // ── STATE ─────────────────────────────────────────────────────────────────────
 let state = {};
 let openSec = {};
